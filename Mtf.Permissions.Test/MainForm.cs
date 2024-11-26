@@ -12,7 +12,7 @@ namespace Mtf.Permissions.Test
 
         private int serverIndex = 3;
         private User guest = new User() { Username = "Guest", IndividualPermissions = [] };
-        private User member = new User() { Username = "Group member", Groups = [ new Group { Permissions = [new Permission { PermissionType = PermissionType.SelectServer }] } ] };
+        private User member = new User() { Username = "Group member", Groups = [new Group { Permissions = [new Permission { PermissionType = PermissionType.SelectServer }] }] };
         private User admin = new User() { Username = "Admin", IndividualPermissions = [new Permission { PermissionType = PermissionType.Admin }] };
 
         public MainForm()
@@ -21,8 +21,9 @@ namespace Mtf.Permissions.Test
             permissionManager = new PermissionManager();
 
             listView1.Tag = "LoadServers";
-            button1.Tag = "Button1_Click";
-            permissionManager.ApplyPermissionsOnControls(this);
+            btnAdd.Tag = "Add";
+            tsmiAdd.Tag = "Add";
+            toolStripDropDownButton1.DropDownItems["addToolStripMenuItem"].Tag = "Add";
 
             comboBox1.Items.AddRange([guest, member, admin]);
             comboBox1.SelectedIndex = 0;
@@ -44,8 +45,13 @@ namespace Mtf.Permissions.Test
             }
         }
 
+        private void BtnAdd_Click(object sender, EventArgs e)
+        {
+            Add();
+        }
+
         [RequirePermission(PermissionType.CreateServer)]
-        private void Button1_Click(object sender, EventArgs e)
+        private void Add()
         {
             try
             {
@@ -63,6 +69,21 @@ namespace Mtf.Permissions.Test
         {
             permissionManager.SetUser(this, (User)comboBox1.SelectedItem);
             LoadServers();
+        }
+
+        private void AddToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Add();
+        }
+
+        private void TsmiAdd_Click(object sender, EventArgs e)
+        {
+            Add();
+        }
+
+        private void AddToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            Add();
         }
     }
 }
