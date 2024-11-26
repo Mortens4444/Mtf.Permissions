@@ -24,7 +24,7 @@ namespace Mtf.Permissions.Test
             btnAdd.Tag = nameof(Add);
             tsmiAdd.Tag = nameof(Add);
             addToolStripMenuItem1.Tag = nameof(Add);
-            toolStripDropDownButton1.DropDownItems["addToolStripMenuItem"].Tag = nameof(Add);
+            toolStripDropDownButton1.DropDownItems[nameof(addToolStripMenuItem)].Tag = nameof(Add);
 
             comboBox1.Items.AddRange([guest, member, admin]);
             comboBox1.SelectedIndex = 0;

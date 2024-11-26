@@ -81,12 +81,12 @@ namespace Mtf.Permissions.Enums
         DeleteIODevice = 0x8000000000,
         IODeviceManagement = SelectIODevice | CreateIODevice | UpdateIODevice | DeleteIODevice,
 
-        // Sample Management
-        SelectSample = 0x10000000000,
-        CreateSample = 0x20000000000,
-        UpdateSample = 0x40000000000,
-        DeleteSample = 0x80000000000,
-        SampleManagement = SelectSample | CreateSample | UpdateSample | DeleteSample,
+        // Template Management
+        SelectTemplate = 0x10000000000,
+        CreateTemplate = 0x20000000000,
+        UpdateTemplate = 0x40000000000,
+        DeleteTemplate = 0x80000000000,
+        SampleManagement = SelectTemplate | CreateTemplate | UpdateTemplate | DeleteTemplate,
 
         // Log Management
         SelectLog = 0x100000000000,
@@ -108,8 +108,8 @@ namespace Mtf.Permissions.Enums
         PermissionManagement = SelectPermission | CreatePermission | UpdatePermission | DeletePermission,
 
         // Miscellaneous
-        General = 0x200000000000,
-        Other = 0x400000000000,
+        View = 0x200000000000,
+        Edit = 0x400000000000,
         NavigateOnGrid = 0x100000000000000,
         MoveOrSizeWindows = 0x200000000000000,
         SendCameraToFullScreenDisplay = 0x400000000000000,
@@ -118,7 +118,7 @@ namespace Mtf.Permissions.Enums
         // Admin
         Admin = UserAndGroupManagement | ServerAndCameraManagement | SerialDeviceManagement | GridManagement |
                 SequenceManagement | DisplayManagement | EventManagement | IODeviceManagement | SampleManagement |
-                LogManagement | SettingsManagement | PermissionManagement | General | Other | NavigateOnGrid | MoveOrSizeWindows |
+                LogManagement | SettingsManagement | PermissionManagement | View | Edit | NavigateOnGrid | MoveOrSizeWindows |
                 SendCameraToFullScreenDisplay | ExitApplication
     }
 }
