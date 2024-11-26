@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Mtf.Permissions</id>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
     <description>
       User, group permission handling, with hierarhical group structure for Windows Forms applications.
 
