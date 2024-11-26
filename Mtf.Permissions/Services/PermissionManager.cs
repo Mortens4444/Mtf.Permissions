@@ -12,45 +12,10 @@ namespace Mtf.Permissions.Services
     {
         private User currentUser;
 
-        public void SetUser(Control container, User currentUser)
+        public void SetUser(Form form, User currentUser)
         {
             this.currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
-            ApplyPermissionsOnControls(container);
-        }
-
-        /// <summary>
-        /// Processes controls that have the Tag property set to a function name.
-        /// </summary>
-        /// <param name="container">The container control, such as the Form itself.</param>
-        /// <exception cref="ArgumentNullException">Thrown when the container is null.</exception>
-        public void ApplyPermissionsOnControls(Control container)
-        {
-            if (container == null)
-            {
-                throw new ArgumentNullException(nameof(container));
-            }
-
-            foreach (var control in container.Controls.OfType<Control>())
-            {
-                if (control.Tag is string methodName)
-                {
-                    var method = FindMethodWithAttribute(container.GetType(), methodName);
-                    if (method != null)
-                    {
-                        var attributes = method.GetCustomAttributes<RequirePermissionAttribute>().ToList();
-                        control.Enabled = attributes.All(attr => currentUser?.HasPermission(attr.PermissionType) ?? false);
-                    }
-                }
-
-                if (!control.Enabled)
-                {
-                    DisableChildren(control);
-                }
-                else if (control.HasChildren)
-                {
-                    ApplyPermissionsOnControls(control);
-                }
-            }
+            ApplyPermissionsOnControls(form);
         }
 
         /// <summary>
@@ -79,22 +44,158 @@ namespace Mtf.Permissions.Services
             }
         }
 
+        /// <summary>
+        /// Processes controls that have the Tag property set to a function name.
+        /// </summary>
+        /// <param name="form">The container form.</param>
+        /// <exception cref="ArgumentNullException">Thrown when the form is null.</exception>
+        public void ApplyPermissionsOnControls(Form form)
+        {
+            if (form == null)
+            {
+                throw new ArgumentNullException(nameof(form));
+            }
+
+            SetEnabledProperty(form, form);
+            ApplyPermissionsOnControls(form, form.Controls);
+        }
+
+        public void ApplyPermissionsOnControls(Form form, UserControl userControl)
+        {
+            if (userControl == null)
+            {
+                throw new ArgumentNullException(nameof(userControl));
+            }
+
+            SetEnabledProperty(form, userControl);
+            ApplyPermissionsOnControls(form, userControl.Controls);
+        }
+
+        public void ApplyPermissionsOnControls(Form form, Control.ControlCollection controls)
+        {
+            if (controls == null)
+            {
+                throw new ArgumentNullException(nameof(controls));
+            }
+
+            foreach (var control in controls)
+            {
+                if (control is WebBrowser)
+                {
+                    continue;
+                }
+
+                if (control is Control controlWithTagProperty)
+                {
+                    SetEnabledProperty(form, controlWithTagProperty);
+                    ApplyPermissionsOnControls(form, controlWithTagProperty.Controls);
+                    if (controlWithTagProperty.ContextMenuStrip != null)
+                    {
+                        ApplyPermissionsOnControls(form, controlWithTagProperty.ContextMenuStrip.Items);
+                    }
+                }
+
+                if (control is MenuStrip menuStrip)
+                {
+                    ApplyPermissionsOnControls(form, menuStrip.Items);
+                }
+                else if (control is StatusStrip statusStrip)
+                {
+                    ApplyPermissionsOnControls(form, statusStrip.Items);
+                }
+                else if (control is ContextMenuStrip contextMenuStrip)
+                {
+                    ApplyPermissionsOnControls(form, contextMenuStrip.Items);
+                }
+#if NET481
+                else if (control is ContextMenu contextMenu)
+                {
+                    ApplyPermissionsOnControls(form, contextMenu.MenuItems);
+                }
+            }
+        }
+
+        private void ApplyPermissionsOnControls(Form form, Menu.MenuItemCollection items)
+        {
+            if (items != null)
+            {
+                foreach (MenuItem item in items)
+                {
+                    SetEnabledProperty(form, item);
+                    ApplyPermissionsOnControls(form, item.MenuItems);
+                }
+            }
+        }
+
+        public void SetEnabledProperty(Form form, MenuItem menuItem)
+        {
+            if (menuItem.Tag is string methodName)
+            {
+                var method = FindMethodWithAttribute(form.GetType(), methodName);
+                if (method != null)
+                {
+                    var attributes = method.GetCustomAttributes<RequirePermissionAttribute>().ToList();
+                    menuItem.Enabled = attributes.All(attr => currentUser?.HasPermission(attr.PermissionType) ?? false);
+                }
+            }
+        }
+
+#else
+            }
+        }
+#endif
+
+        public void ApplyPermissionsOnControls(Form form, ToolStripItemCollection toolStripItems)
+        {
+            if (toolStripItems == null)
+            {
+                throw new ArgumentNullException(nameof(toolStripItems));
+            }
+
+            foreach (ToolStripItem toolStripItem in toolStripItems)
+            {
+                SetEnabledProperty(form, toolStripItem);
+                if (toolStripItem is ToolStripMenuItem toolStripMenuItem)
+                {
+                    ApplyPermissionsOnControls(form, toolStripMenuItem.DropDownItems);
+                }
+                else if (toolStripItem is ToolStripDropDownButton toolStripDropDownButton)
+                {
+                    ApplyPermissionsOnControls(form, toolStripDropDownButton.DropDownItems);
+                }
+            }
+        }
+
+        public void SetEnabledProperty(Form form, Control control)
+        {
+            if (control.Tag is string methodName)
+            {
+                var method = FindMethodWithAttribute(form.GetType(), methodName);
+                if (method != null)
+                {
+                    var attributes = method.GetCustomAttributes<RequirePermissionAttribute>().ToList();
+                    control.Enabled = attributes.All(attr => currentUser?.HasPermission(attr.PermissionType) ?? false);
+                }
+            }
+        }
+
+        public void SetEnabledProperty(Form form, ToolStripItem toolStripItem)
+        {
+            if (toolStripItem.Tag is string methodName)
+            {
+                var method = FindMethodWithAttribute(form.GetType(), methodName);
+                if (method != null)
+                {
+                    var attributes = method.GetCustomAttributes<RequirePermissionAttribute>().ToList();
+                    toolStripItem.Enabled = attributes.All(attr => currentUser?.HasPermission(attr.PermissionType) ?? false);
+                }
+            }
+        }
+
         private static MethodInfo FindMethodWithAttribute(Type type, string methodName)
         {
             return type.GetMethods(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static)
                 .FirstOrDefault(method => method.Name == methodName && method.GetCustomAttributes<RequirePermissionAttribute>().Any());
-        }
-
-        private static void DisableChildren(Control parent)
-        {
-            foreach (var child in parent.Controls.OfType<Control>())
-            {
-                child.Enabled = false;
-                if (child.HasChildren)
-                {
-                    DisableChildren(child);
-                }
-            }
         }
     }
 }

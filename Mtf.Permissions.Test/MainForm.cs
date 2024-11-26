@@ -23,6 +23,7 @@ namespace Mtf.Permissions.Test
             listView1.Tag = "LoadServers";
             btnAdd.Tag = "Add";
             tsmiAdd.Tag = "Add";
+            addToolStripMenuItem1.Tag = "Add";
             toolStripDropDownButton1.DropDownItems["addToolStripMenuItem"].Tag = "Add";
 
             comboBox1.Items.AddRange([guest, member, admin]);
