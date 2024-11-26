@@ -86,7 +86,7 @@ namespace Mtf.Permissions.Enums
         CreateTemplate = 0x20000000000,
         UpdateTemplate = 0x40000000000,
         DeleteTemplate = 0x80000000000,
-        SampleManagement = SelectTemplate | CreateTemplate | UpdateTemplate | DeleteTemplate,
+        TemplateManagement = SelectTemplate | CreateTemplate | UpdateTemplate | DeleteTemplate,
 
         // Log Management
         SelectLog = 0x100000000000,
@@ -117,7 +117,7 @@ namespace Mtf.Permissions.Enums
 
         // Admin
         Admin = UserAndGroupManagement | ServerAndCameraManagement | SerialDeviceManagement | GridManagement |
-                SequenceManagement | DisplayManagement | EventManagement | IODeviceManagement | SampleManagement |
+                SequenceManagement | DisplayManagement | EventManagement | IODeviceManagement | TemplateManagement |
                 LogManagement | SettingsManagement | PermissionManagement | View | Edit | NavigateOnGrid | MoveOrSizeWindows |
                 SendCameraToFullScreenDisplay | ExitApplication
     }
