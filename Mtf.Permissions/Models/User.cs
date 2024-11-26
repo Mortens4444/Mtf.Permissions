@@ -1,4 +1,4 @@
-﻿using Mtf.Permissions.Enums;
+﻿using Mtf.Permissions.Attributes;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -30,29 +30,37 @@ namespace Mtf.Permissions.Models
 
         public List<Contact> Contacts { get; set; } = new List<Contact>();
 
-        public bool HasPermission(PermissionType requiredPermissions)
+        public bool HasPermission(RequirePermissionAttribute requiredPermission)
         {
-            var revokedPermissions = IndividualPermissions
-                .Where(p => !p.IsAllowed)
-                .Select(p => p.PermissionType)
-                .Aggregate(PermissionType.None, (current, permission) => current | permission);
+            if (requiredPermission == null)
+            {
+                throw new ArgumentNullException(nameof(requiredPermission));
+            }
 
-            if ((revokedPermissions & requiredPermissions) != PermissionType.None)
+            var requiredGroup = requiredPermission.PermissionGroup;
+            var requiredValue = requiredPermission.PermissionValue;
+
+            var revokedPermissions = IndividualPermissions
+                .Where(p => p.PermissionGroup == requiredGroup && !p.IsAllowed)
+                .Select(p => p.PermissionValue)
+                .Aggregate(0L, (current, permission) => current | permission);
+
+            if ((revokedPermissions & requiredValue) != 0)
             {
                 return false;
             }
 
             var allowedPermissions = IndividualPermissions
-                .Where(p => p.IsAllowed)
-                .Select(p => p.PermissionType)
-                .Aggregate(PermissionType.None, (current, permission) => current | permission);
+                .Where(p => p.PermissionGroup == requiredGroup && p.IsAllowed)
+                .Select(p => p.PermissionValue)
+                .Aggregate(0L, (current, permission) => current | permission);
 
             foreach (var group in Groups)
             {
-                allowedPermissions |= group.GetAllowedPermissions();
+                allowedPermissions |= group.GetAllowedPermissions(requiredGroup);
             }
 
-            return (allowedPermissions & requiredPermissions) == requiredPermissions;
+            return (allowedPermissions & requiredValue) == requiredValue;
         }
 
         public override string ToString()

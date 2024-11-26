@@ -37,7 +37,7 @@ namespace Mtf.Permissions.Services
             var attributes = method.GetCustomAttributes<RequirePermissionAttribute>();
             foreach (var attribute in attributes)
             {
-                if (!currentUser.HasPermission(attribute.PermissionType))
+                if (!currentUser.HasPermission(attribute))
                 {
                     throw new UnauthorizedAccessException($"No permission for this operation: {method.Name}");
                 }
@@ -129,13 +129,21 @@ namespace Mtf.Permissions.Services
 
         public void SetEnabledProperty(Form form, MenuItem menuItem)
         {
+            if (form == null)
+            {
+                throw new ArgumentNullException(nameof(form));
+            }
+            if (menuItem == null)
+            {
+                throw new ArgumentNullException(nameof(menuItem));
+            }
             if (menuItem.Tag is string methodName)
             {
                 var method = FindMethodWithAttribute(form.GetType(), methodName);
                 if (method != null)
                 {
                     var attributes = method.GetCustomAttributes<RequirePermissionAttribute>().ToList();
-                    menuItem.Enabled = attributes.All(attr => currentUser?.HasPermission(attr.PermissionType) ?? false);
+                    menuItem.Enabled = attributes.All(attr => currentUser?.HasPermission(attr) ?? false);
                 }
             }
         }
@@ -168,26 +176,43 @@ namespace Mtf.Permissions.Services
 
         public void SetEnabledProperty(Form form, Control control)
         {
+            if (form == null)
+            {
+                throw new ArgumentNullException(nameof(form));
+            }
+            if (control == null)
+            {
+                throw new ArgumentNullException(nameof(control));
+            }
             if (control.Tag is string methodName)
             {
                 var method = FindMethodWithAttribute(form.GetType(), methodName);
                 if (method != null)
                 {
                     var attributes = method.GetCustomAttributes<RequirePermissionAttribute>().ToList();
-                    control.Enabled = attributes.All(attr => currentUser?.HasPermission(attr.PermissionType) ?? false);
+                    control.Enabled = attributes.All(attr => currentUser?.HasPermission(attr) ?? false);
                 }
             }
         }
 
         public void SetEnabledProperty(Form form, ToolStripItem toolStripItem)
         {
+            if (form == null)
+            {
+                throw new ArgumentNullException(nameof(form));
+            }
+            if (toolStripItem == null)
+            {
+                throw new ArgumentNullException(nameof(toolStripItem));
+            }
+
             if (toolStripItem.Tag is string methodName)
             {
                 var method = FindMethodWithAttribute(form.GetType(), methodName);
                 if (method != null)
                 {
                     var attributes = method.GetCustomAttributes<RequirePermissionAttribute>().ToList();
-                    toolStripItem.Enabled = attributes.All(attr => currentUser?.HasPermission(attr.PermissionType) ?? false);
+                    toolStripItem.Enabled = attributes.All(attr => currentUser?.HasPermission(attr) ?? false);
                 }
             }
         }

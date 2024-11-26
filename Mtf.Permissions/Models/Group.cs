@@ -1,4 +1,5 @@
-﻿using Mtf.Permissions.Enums;
+﻿using Mtf.Permissions.Attributes;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -17,22 +18,29 @@ namespace Mtf.Permissions.Models
 
         public List<Image> Images { get; set; } = new List<Image>();
 
-        public bool HasPermissions(PermissionType requiredPermissions)
+        public bool HasPermissions(RequirePermissionAttribute requirePermissionAttribute)
         {
-            var groupPermissions = Permissions
-                .Where(p => p.IsAllowed)
-                .Select(p => p.PermissionType)
-                .Aggregate(PermissionType.None, (current, permission) => current | permission);
+            if (requirePermissionAttribute == null)
+            {
+                throw new ArgumentNullException(nameof(requirePermissionAttribute));
+            }
 
-            return (groupPermissions & requiredPermissions) == requiredPermissions;
+            var requiredPermissionValue = requirePermissionAttribute.PermissionValue;
+
+            var groupPermissions = Permissions
+                .Where(p => p.IsAllowed && p.PermissionGroup == requirePermissionAttribute.PermissionGroup)
+                .Select(p => p.PermissionValue)
+                .Aggregate(0L, (current, permission) => current | permission);
+
+            return (groupPermissions & requiredPermissionValue) == requiredPermissionValue;
         }
 
-        public PermissionType GetAllowedPermissions()
+        public long GetAllowedPermissions(Type permissionGroup)
         {
             return Permissions
-                .Where(p => p.IsAllowed)
-                .Select(p => p.PermissionType)
-                .Aggregate(PermissionType.None, (current, permission) => current | permission);
+                .Where(p => p.IsAllowed && p.PermissionGroup == permissionGroup)
+                .Select(p => p.PermissionValue)
+                .Aggregate(0L, (current, permission) => current | permission);
         }
     }
 }

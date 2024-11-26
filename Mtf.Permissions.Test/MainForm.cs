@@ -8,12 +8,40 @@ namespace Mtf.Permissions.Test
 {
     public partial class MainForm : Form
     {
-        private PermissionManager permissionManager;
+        private readonly PermissionManager permissionManager;
 
         private int serverIndex = 3;
-        private User guest = new User() { Username = "Guest", IndividualPermissions = [] };
-        private User member = new User() { Username = "Group member", Groups = [new Group { Permissions = [new Permission { PermissionType = PermissionType.SelectServer }] }] };
-        private User admin = new User() { Username = "Admin", IndividualPermissions = [new Permission { PermissionType = PermissionType.Admin }] };
+        
+        private readonly User guest = new()
+        {
+            Username = "Guest",
+            IndividualPermissions = []
+        };
+        
+        private readonly User member = new()
+        {
+            Username = "Group member",
+            Groups =
+            [
+                new Group
+                {
+                    Permissions =
+                    [
+                        new Permission { PermissionGroup = typeof(ServerManagementPermissions), PermissionValue = (long)ServerManagementPermissions.Select}
+                    ]
+                }
+            ]
+        };
+
+        private readonly User admin = new()
+        {
+            Username = "Admin",
+            IndividualPermissions =
+            [
+                new Permission { PermissionGroup = typeof(ServerManagementPermissions), PermissionValue = (long)ServerManagementPermissions.Create },
+                new Permission { PermissionGroup = typeof(ServerManagementPermissions), PermissionValue = (long)ServerManagementPermissions.Select }
+            ]
+        };
 
         public MainForm()
         {
@@ -24,13 +52,13 @@ namespace Mtf.Permissions.Test
             btnAdd.Tag = nameof(Add);
             tsmiAdd.Tag = nameof(Add);
             addToolStripMenuItem1.Tag = nameof(Add);
-            toolStripDropDownButton1.DropDownItems[nameof(addToolStripMenuItem)].Tag = nameof(Add);
+            toolStripDropDownButton1.DropDownItems[nameof(addToolStripMenuItem)]!.Tag = nameof(Add);
 
             comboBox1.Items.AddRange([guest, member, admin]);
             comboBox1.SelectedIndex = 0;
         }
 
-        [RequirePermission(PermissionType.SelectServer)]
+        [RequirePermission(ServerManagementPermissions.Select)]
         private void LoadServers()
         {
             try
@@ -51,7 +79,7 @@ namespace Mtf.Permissions.Test
             Add();
         }
 
-        [RequirePermission(PermissionType.CreateServer)]
+        [RequirePermission(ServerManagementPermissions.Create)]
         private void Add()
         {
             try
@@ -68,7 +96,7 @@ namespace Mtf.Permissions.Test
 
         private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            permissionManager.SetUser(this, (User)comboBox1.SelectedItem);
+            permissionManager.SetUser(this, (User)comboBox1.SelectedItem!);
             LoadServers();
         }
 

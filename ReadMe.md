@@ -54,18 +54,24 @@ permissionManager.ApplyPermissionsOnControls(mainForm);
 
 Annotates methods that require specific permissions.
 
+The `RequirePermission` attribute can be instantiated with one of the following enum values:
+`ApplicationManagementPermissions`, `CameraManagementPermissions`, `DisplayManagementPermissions`, `EventManagementPermissions`, `GeneralPermissions`,
+`GridManagementPermissions`, `GroupManagementPermissions`, `IODeviceManagementPermissions`, `LanguageManagementPermissions`, `LogManagementPermissions`,
+`MapManagementPermissions`, `PermissionManagementPermissions`, `SequenceManagementPermissions`, `SerialDeviceManagementPermissions`,
+`ServerManagementPermissions`, `SettingsManagementPermissions`, `TemplateManagementPermissions`, `UserManagementPermissions`, `WindowManagementPermissions`
+
 #### **Properties**
-| Property         | Type             | Description                         |
-|------------------|------------------|-------------------------------------|
-| `PermissionType` | `PermissionType` | Defines the type of permission required to access the method. |
+| Property          | Type   | Description                                                    |
+|-------------------|--------|----------------------------------------------------------------|
+| `PermissionValue` | `long` | Defines the value of permission required to access the method. |
+| `PermissionGroup` | `Type` | Defines the type of permission required to access the method.  |
 
 #### **Example Usage**
 ```csharp
-[RequirePermission(PermissionType.Admin)]
-private void PerformAdminAction()
+[RequirePermission(ApplicationManagementPermissions.Exit)]
+private void ExitApplication()
 {
-    // Admin-only logic
-    MessageBox.Show("Admin action executed.");
+    Environment.Exit(0);
 }
 ```
 
@@ -119,30 +125,40 @@ public partial class MainForm : Form
         permissionManager = new PermissionManager();
 
         // Define users and their permissions
-        var guest = new User { Username = "Guest", IndividualPermissions = new() };
-        var member = new User { Username = "Member", IndividualPermissions = new() { new Permission { PermissionType = PermissionType.View } } };
-        var admin = new User { Username = "Admin", IndividualPermissions = new() { new Permission { PermissionType = PermissionType.Admin } } };
-
+        var guest = new User() { Username = "Guest", IndividualPermissions = [] };
+        var member = new User() { Username = "Group member", Groups = [new Group { Permissions = [new Permission { PermissionGroup = typeof(GeneralPermissions), PermissionValue = (long)GeneralPermissions.View}] }] };
+        var admin = new User()
+        {
+            Username = "Admin",
+            IndividualPermissions =
+            [
+                new Permission { PermissionGroup = typeof(GeneralPermissions), PermissionValue = (long)GeneralPermissions.View },
+                new Permission { PermissionGroup = typeof(GeneralPermissions), PermissionValue = (long)GeneralPermissions.Edit }
+            ]
+        };
+		
         // Assign current user
         currentUser = admin;
 
         // Assign permissions to controls via the Tag property
-        adminButton.Tag = nameof(AdminAction);
+        editButton.Tag = nameof(EditAction);
         viewButton.Tag = nameof(ViewAction);
 
         // Apply permissions
         permissionManager.SetUser(this, currentUser);
     }
 
-    [RequirePermission(PermissionType.Admin)]
-    private void AdminAction()
+    [RequirePermission(GeneralPermissions.Edit)]
+    private void EditAction()
     {
-        MessageBox.Show("Admin action executed.");
+        permissionManager.EnsurePermissions();
+        MessageBox.Show("Edit action executed.");
     }
 
-    [RequirePermission(PermissionType.View)]
+    [RequirePermission(GeneralPermissions.View)]
     private void ViewAction()
     {
+        permissionManager.EnsurePermissions();
         MessageBox.Show("View action executed.");
     }
 }
@@ -199,10 +215,3 @@ private void ConfigureSettings() { /* Logic */ }
 
 4. **Caching**:  
    Cache user permissions for large applications to optimize performance.
-
----
-
-## **Extensibility**
-
-- Add custom `PermissionType` values.
-- Extend `User` and `Group` models to support additional metadata.
