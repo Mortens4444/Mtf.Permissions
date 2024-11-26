@@ -20,11 +20,11 @@ namespace Mtf.Permissions.Test
             InitializeComponent();
             permissionManager = new PermissionManager();
 
-            listView1.Tag = "LoadServers";
-            btnAdd.Tag = "Add";
-            tsmiAdd.Tag = "Add";
-            addToolStripMenuItem1.Tag = "Add";
-            toolStripDropDownButton1.DropDownItems["addToolStripMenuItem"].Tag = "Add";
+            listView1.Tag = nameof(LoadServers);
+            btnAdd.Tag = nameof(Add);
+            tsmiAdd.Tag = nameof(Add);
+            addToolStripMenuItem1.Tag = nameof(Add);
+            toolStripDropDownButton1.DropDownItems["addToolStripMenuItem"].Tag = nameof(Add);
 
             comboBox1.Items.AddRange([guest, member, admin]);
             comboBox1.SelectedIndex = 0;
