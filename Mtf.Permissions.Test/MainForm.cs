@@ -48,12 +48,6 @@ namespace Mtf.Permissions.Test
             InitializeComponent();
             permissionManager = new PermissionManager();
 
-            listView1.Tag = nameof(LoadServers);
-            btnAdd.Tag = nameof(Add);
-            tsmiAdd.Tag = nameof(Add);
-            addToolStripMenuItem1.Tag = nameof(Add);
-            toolStripDropDownButton1.DropDownItems[nameof(addToolStripMenuItem)]!.Tag = nameof(Add);
-
             comboBox1.Items.AddRange([guest, member, admin]);
             comboBox1.SelectedIndex = 0;
         }
@@ -74,13 +68,8 @@ namespace Mtf.Permissions.Test
             }
         }
 
-        private void BtnAdd_Click(object sender, EventArgs e)
-        {
-            Add();
-        }
-
         [RequirePermission(ServerManagementPermissions.Create)]
-        private void Add()
+        private void BtnAdd_Click(object sender, EventArgs e)
         {
             try
             {
@@ -98,21 +87,6 @@ namespace Mtf.Permissions.Test
         {
             permissionManager.SetUser(this, (User)comboBox1.SelectedItem!);
             LoadServers();
-        }
-
-        private void AddToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Add();
-        }
-
-        private void TsmiAdd_Click(object sender, EventArgs e)
-        {
-            Add();
-        }
-
-        private void AddToolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-            Add();
         }
     }
 }

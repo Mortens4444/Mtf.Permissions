@@ -102,7 +102,7 @@
             tsmiAdd.Name = "tsmiAdd";
             tsmiAdd.Size = new Size(41, 20);
             tsmiAdd.Text = "Add";
-            tsmiAdd.Click += TsmiAdd_Click;
+            tsmiAdd.Click += BtnAdd_Click;
             // 
             // statusStrip1
             // 
@@ -128,7 +128,7 @@
             addToolStripMenuItem.Name = "addToolStripMenuItem";
             addToolStripMenuItem.Size = new Size(96, 22);
             addToolStripMenuItem.Text = "Add";
-            addToolStripMenuItem.Click += AddToolStripMenuItem_Click;
+            addToolStripMenuItem.Click += BtnAdd_Click;
             // 
             // contextMenuStrip1
             // 
@@ -141,7 +141,7 @@
             addToolStripMenuItem1.Name = "addToolStripMenuItem1";
             addToolStripMenuItem1.Size = new Size(96, 22);
             addToolStripMenuItem1.Text = "Add";
-            addToolStripMenuItem1.Click += AddToolStripMenuItem1_Click;
+            addToolStripMenuItem1.Click += BtnAdd_Click;
             // 
             // MainForm
             // 

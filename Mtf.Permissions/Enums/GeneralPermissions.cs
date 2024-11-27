@@ -16,6 +16,14 @@ namespace Mtf.Permissions.Enums
         Cut = 0x80,
         Copy = 0x100,
         Paste = 0x200,
-        Exit = 0x400
+        OpenLink = 0x400,
+        Exit = 0x800,
+        File = 0x1000,
+        Image = 0x2000,
+        Document = 0x4000,
+        Sheet = 0x8000,
+        ShowPassword = 0x10000,
+
+        FullControl = Select | Create | Update | Delete | Read | View | Edit | Cut | Copy | Paste | OpenLink | Exit | File | Image | Document | Sheet | ShowPassword
     }
 }

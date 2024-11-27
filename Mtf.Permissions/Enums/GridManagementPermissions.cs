@@ -11,6 +11,7 @@ namespace Mtf.Permissions.Enums
         Update = 0x4,
         Delete = 0x8,
         Navigate = 0x10,
-        FullControl = Select | Create | Update | Delete | Navigate
+        Rearrange = 0x20,
+        FullControl = Select | Create | Update | Delete | Navigate | Rearrange
     }
 }

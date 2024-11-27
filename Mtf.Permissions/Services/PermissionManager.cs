@@ -1,6 +1,8 @@
 ﻿using Mtf.Permissions.Attributes;
 using Mtf.Permissions.Models;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -137,12 +139,41 @@ namespace Mtf.Permissions.Services
             {
                 throw new ArgumentNullException(nameof(menuItem));
             }
+
+            var eventClickField = typeof(MenuItem).GetField("s_clickEvent", BindingFlags.NonPublic | BindingFlags.Static)
+                                ?? typeof(MenuItem).GetField("EventClick", BindingFlags.NonPublic | BindingFlags.Static)
+                                ?? typeof(MenuItem).GetField("s_eventClick", BindingFlags.NonPublic | BindingFlags.Static);
+
+            if (eventClickField != null)
+            {
+                var eventClickKey = eventClickField.GetValue(null);
+                var eventsProperty = typeof(MenuItem).GetProperty("Events", BindingFlags.NonPublic | BindingFlags.Instance);
+
+                if (eventsProperty?.GetValue(menuItem) is EventHandlerList eventHandlers && eventClickKey != null)
+                {
+                    if (eventHandlers[eventClickKey] is MulticastDelegate eventDelegate)
+                    {
+                        foreach (var method in eventDelegate.GetInvocationList().Select(d => d.Method))
+                        {
+                            if (method.DeclaringType != null)
+                            {
+                                var attributes = method.GetCustomAttributes<RequirePermissionAttribute>().ToList();
+                                if (attributes.Count > 0)
+                                {
+                                    menuItem.Enabled = attributes.All(attr => currentUser?.HasPermission(attr) ?? false);
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             if (menuItem.Tag is string methodName)
             {
-                var method = FindMethodWithAttribute(form.GetType(), methodName);
-                if (method != null)
+                var attributes = GetRequiredPermissionAttributes(form, methodName);
+                if (attributes.Count > 0)
                 {
-                    var attributes = method.GetCustomAttributes<RequirePermissionAttribute>().ToList();
                     menuItem.Enabled = attributes.All(attr => currentUser?.HasPermission(attr) ?? false);
                 }
             }
@@ -184,15 +215,47 @@ namespace Mtf.Permissions.Services
             {
                 throw new ArgumentNullException(nameof(control));
             }
-            if (control.Tag is string methodName)
+
+            var eventClickField = typeof(Control).GetField("s_clickEvent", BindingFlags.NonPublic | BindingFlags.Static)
+                                ?? typeof(Control).GetField("EventClick", BindingFlags.NonPublic | BindingFlags.Static)
+                                ?? typeof(Control).GetField("s_eventClick", BindingFlags.NonPublic | BindingFlags.Static);
+
+            if (eventClickField != null)
             {
-                var method = FindMethodWithAttribute(form.GetType(), methodName);
-                if (method != null)
+                var eventClickKey = eventClickField.GetValue(null);
+                var eventsProperty = typeof(Control).GetProperty("Events", BindingFlags.NonPublic | BindingFlags.Instance);
+
+                if (eventsProperty?.GetValue(control) is EventHandlerList eventHandlers && eventClickKey != null)
                 {
-                    var attributes = method.GetCustomAttributes<RequirePermissionAttribute>().ToList();
-                    control.Enabled = attributes.All(attr => currentUser?.HasPermission(attr) ?? false);
+                    if (eventHandlers[eventClickKey] is MulticastDelegate eventDelegate)
+                    {
+                        foreach (var method in eventDelegate.GetInvocationList().Select(d => d.Method))
+                        {
+                            if (method.DeclaringType != null)
+                            {
+                                var attributes = method.GetCustomAttributes<RequirePermissionAttribute>().ToList();
+                                if (attributes.Count > 0)
+                                {
+                                    control.Enabled = attributes.All(attr => currentUser?.HasPermission(attr) ?? false);
+                                    return;
+                                }
+                            }
+                        }
+                    }
                 }
             }
+
+            if (control.Tag is string methodName)
+            {
+                var attributes = GetRequiredPermissionAttributes(form, methodName);
+                if (attributes.Count > 0)
+                {
+                    control.Enabled = attributes.All(attr => currentUser?.HasPermission(attr) ?? false);
+                    return;
+                }
+            }
+
+            control.Enabled = true;
         }
 
         public void SetEnabledProperty(Form form, ToolStripItem toolStripItem)
@@ -206,15 +269,50 @@ namespace Mtf.Permissions.Services
                 throw new ArgumentNullException(nameof(toolStripItem));
             }
 
+            var eventClickField = typeof(ToolStripItem).GetField("s_clickEvent", BindingFlags.NonPublic | BindingFlags.Static)
+                                ?? typeof(ToolStripItem).GetField("EventClick", BindingFlags.NonPublic | BindingFlags.Static)
+                                ?? typeof(ToolStripItem).GetField("s_eventClick", BindingFlags.NonPublic | BindingFlags.Static);
+
+            if (eventClickField != null)
+            {
+                var eventClickKey = eventClickField.GetValue(null);
+                var eventsProperty = typeof(ToolStripItem).GetProperty("Events", BindingFlags.NonPublic | BindingFlags.Instance);
+
+                if (eventsProperty?.GetValue(toolStripItem) is EventHandlerList eventHandlers && eventClickKey != null)
+                {
+                    if (eventHandlers[eventClickKey] is MulticastDelegate eventDelegate)
+                    {
+                        foreach (var method in eventDelegate.GetInvocationList().Select(d => d.Method))
+                        {
+                            if (method.DeclaringType != null)
+                            {
+                                var attributes = method.GetCustomAttributes<RequirePermissionAttribute>().ToList();
+                                if (attributes.Count > 0)
+                                {
+                                    toolStripItem.Enabled = attributes.All(attr => currentUser?.HasPermission(attr) ?? false);
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+
             if (toolStripItem.Tag is string methodName)
             {
-                var method = FindMethodWithAttribute(form.GetType(), methodName);
-                if (method != null)
+                var attributes = GetRequiredPermissionAttributes(form, methodName);
+                if (attributes.Count > 0)
                 {
-                    var attributes = method.GetCustomAttributes<RequirePermissionAttribute>().ToList();
                     toolStripItem.Enabled = attributes.All(attr => currentUser?.HasPermission(attr) ?? false);
                 }
             }
+        }
+
+        private static List<RequirePermissionAttribute> GetRequiredPermissionAttributes(Form form, string methodName)
+        {
+            var method = FindMethodWithAttribute(form.GetType(), methodName);
+            return method != null ? method.GetCustomAttributes<RequirePermissionAttribute>().ToList() : new List<RequirePermissionAttribute>();
         }
 
         private static MethodInfo FindMethodWithAttribute(Type type, string methodName)

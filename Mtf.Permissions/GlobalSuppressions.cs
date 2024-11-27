@@ -11,3 +11,4 @@ using System.Diagnostics.CodeAnalysis;
 [assembly: SuppressMessage("Naming", "CA1711:Identifiers should not have incorrect suffix", Justification = "<Pending>", Scope = "type", Target = "~T:Mtf.Permissions.Models.Permission")]
 [assembly: SuppressMessage("Maintainability", "CA1510:Use ArgumentNullException throw helper")]
 [assembly: SuppressMessage("Design", "CA1019:Define accessors for attribute arguments", Justification = "<Pending>", Scope = "member", Target = "~M:Mtf.Permissions.Attributes.RequirePermissionAttribute.#ctor(Mtf.Permissions.Enums.ApplicationManagementPermissions)")]
+[assembly: SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores")]

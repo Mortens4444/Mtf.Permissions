@@ -10,6 +10,7 @@ namespace Mtf.Permissions.Enums
         Create = 0x2,
         Update = 0x4,
         Delete = 0x8,
-        FullControl = Select | Create | Update | Delete
+        Validate = 0x10,
+        FullControl = Select | Create | Update | Delete | Validate
     }
 }
