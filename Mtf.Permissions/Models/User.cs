@@ -1,4 +1,5 @@
 ﻿using Mtf.Permissions.Attributes;
+using Mtf.Permissions.Enums;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -29,6 +30,17 @@ namespace Mtf.Permissions.Models
         public List<Permission> RevokedPermissions => IndividualPermissions.Where(permission => !permission.IsAllowed).ToList();
 
         public List<Contact> Contacts { get; set; } = new List<Contact>();
+
+        public bool HasPermission(Enum permission)
+        {
+            var permissionValue = Convert.ToInt64(permission);
+
+            var isRevoked = RevokedPermissions.Any(p => p.PermissionGroup == permission.GetType() && p.PermissionValue == permissionValue);
+            var isAllowedIndividually = IndividualPermissions.Any(p => p.PermissionGroup == permission.GetType() && p.PermissionValue == permissionValue && p.IsAllowed);
+            var isAllowedByGroup = Groups.Any(group => group.GetAllowedPermissions(permission.GetType()) == permissionValue);
+
+            return !isRevoked && (isAllowedIndividually || isAllowedByGroup);
+        }
 
         public bool HasPermission(RequirePermissionAttribute requiredPermission)
         {

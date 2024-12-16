@@ -39,7 +39,8 @@ namespace Mtf.Permissions.Test
             IndividualPermissions =
             [
                 new Permission { PermissionGroup = typeof(ServerManagementPermissions), PermissionValue = (long)ServerManagementPermissions.Create },
-                new Permission { PermissionGroup = typeof(ServerManagementPermissions), PermissionValue = (long)ServerManagementPermissions.Select }
+                new Permission { PermissionGroup = typeof(ServerManagementPermissions), PermissionValue = (long)ServerManagementPermissions.Select },
+                new Permission { PermissionGroup = typeof(WindowManagementPermissions), PermissionValue = (long)WindowManagementPermissions.Close}
             ]
         };
 
@@ -87,6 +88,53 @@ namespace Mtf.Permissions.Test
         {
             permissionManager.SetUser(this, (User)comboBox1.SelectedItem!);
             LoadServers();
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            const int WM_NCLBUTTONDOWN = 0xA1;
+            const int WM_SYSCOMMAND = 0x0112;
+            const int WM_CLOSE = 0x0010;
+            const int HTCAPTION = 0x02;
+            const int SC_SIZE = 0xF000;
+            const int SC_MOVE = 0xF010;
+
+            if (m.Msg == WM_NCLBUTTONDOWN && m.WParam.ToInt32() == HTCAPTION)
+            {
+                if (!permissionManager.CurrentUser.HasPermission(WindowManagementPermissions.Move))
+                {
+                    return;
+                }
+            }
+
+            if (m.Msg == WM_SYSCOMMAND)
+            {
+                var command = m.WParam.ToInt32() & 0xFFF0;
+                if (command == SC_SIZE)
+                {
+                    if (!permissionManager.CurrentUser.HasPermission(WindowManagementPermissions.Resize))
+                    {
+                        return;
+                    }
+                }                
+                else if (command == SC_MOVE)
+                {
+                    if (!permissionManager.CurrentUser.HasPermission(WindowManagementPermissions.Move))
+                    {
+                        return;
+                    }
+                }
+            }
+
+            if (m.Msg == WM_CLOSE)
+            {
+                if (!permissionManager.CurrentUser.HasPermission(WindowManagementPermissions.Close))
+                {
+                    return;
+                }
+            }
+
+            base.WndProc(ref m);
         }
     }
 }

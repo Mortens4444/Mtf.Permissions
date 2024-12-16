@@ -12,11 +12,11 @@ namespace Mtf.Permissions.Services
 {
     public class PermissionManager
     {
-        private User currentUser;
+        public User CurrentUser { get; private set; }
 
         public void SetUser(Form form, User currentUser)
         {
-            this.currentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
+            CurrentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
             ApplyPermissionsOnControls(form);
         }
 
@@ -39,7 +39,7 @@ namespace Mtf.Permissions.Services
             var attributes = method.GetCustomAttributes<RequirePermissionAttribute>();
             foreach (var attribute in attributes)
             {
-                if (!currentUser.HasPermission(attribute))
+                if (!CurrentUser.HasPermission(attribute))
                 {
                     throw new UnauthorizedAccessException($"No permission for this operation: {method.Name}");
                 }
@@ -160,7 +160,7 @@ namespace Mtf.Permissions.Services
                                 var attributes = method.GetCustomAttributes<RequirePermissionAttribute>().ToList();
                                 if (attributes.Count > 0)
                                 {
-                                    menuItem.Enabled = attributes.All(attr => currentUser?.HasPermission(attr) ?? false);
+                                    menuItem.Enabled = attributes.All(attr => CurrentUser?.HasPermission(attr) ?? false);
                                     return;
                                 }
                             }
@@ -174,7 +174,7 @@ namespace Mtf.Permissions.Services
                 var attributes = GetRequiredPermissionAttributes(form, methodName);
                 if (attributes.Count > 0)
                 {
-                    menuItem.Enabled = attributes.All(attr => currentUser?.HasPermission(attr) ?? false);
+                    menuItem.Enabled = attributes.All(attr => CurrentUser?.HasPermission(attr) ?? false);
                 }
             }
         }
@@ -236,7 +236,7 @@ namespace Mtf.Permissions.Services
                                 var attributes = method.GetCustomAttributes<RequirePermissionAttribute>().ToList();
                                 if (attributes.Count > 0)
                                 {
-                                    control.Enabled = attributes.All(attr => currentUser?.HasPermission(attr) ?? false);
+                                    control.Enabled = attributes.All(attr => CurrentUser?.HasPermission(attr) ?? false);
                                     return;
                                 }
                             }
@@ -250,7 +250,7 @@ namespace Mtf.Permissions.Services
                 var attributes = GetRequiredPermissionAttributes(form, methodName);
                 if (attributes.Count > 0)
                 {
-                    control.Enabled = attributes.All(attr => currentUser?.HasPermission(attr) ?? false);
+                    control.Enabled = attributes.All(attr => CurrentUser?.HasPermission(attr) ?? false);
                     return;
                 }
             }
@@ -289,7 +289,7 @@ namespace Mtf.Permissions.Services
                                 var attributes = method.GetCustomAttributes<RequirePermissionAttribute>().ToList();
                                 if (attributes.Count > 0)
                                 {
-                                    toolStripItem.Enabled = attributes.All(attr => currentUser?.HasPermission(attr) ?? false);
+                                    toolStripItem.Enabled = attributes.All(attr => CurrentUser?.HasPermission(attr) ?? false);
                                     return;
                                 }
                             }
@@ -304,7 +304,7 @@ namespace Mtf.Permissions.Services
                 var attributes = GetRequiredPermissionAttributes(form, methodName);
                 if (attributes.Count > 0)
                 {
-                    toolStripItem.Enabled = attributes.All(attr => currentUser?.HasPermission(attr) ?? false);
+                    toolStripItem.Enabled = attributes.All(attr => CurrentUser?.HasPermission(attr) ?? false);
                 }
             }
         }

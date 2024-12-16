@@ -1,5 +1,6 @@
 ﻿using Mtf.Permissions.Enums;
 using System;
+using System.Linq;
 
 namespace Mtf.Permissions.Attributes
 {
@@ -306,7 +307,11 @@ namespace Mtf.Permissions.Attributes
 
         public override string ToString()
         {
-            return $"Required permission: {PermissionGroup.Name} ({PermissionValue})";
+            var permissionNames = Enum.GetValues(PermissionGroup)
+                .Cast<Enum>()
+                .Where(value => (PermissionValue & Convert.ToInt64(value)) != 0)
+                .Select(value => value.ToString());
+            return $"Required permission: {PermissionGroup.Name} ({String.Join(", ", permissionNames)})";
         }
     }
 }
