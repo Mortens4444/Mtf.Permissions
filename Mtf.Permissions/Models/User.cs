@@ -35,9 +35,9 @@ namespace Mtf.Permissions.Models
         {
             var permissionValue = Convert.ToInt64(permission);
 
-            var isRevoked = RevokedPermissions.Any(p => p.PermissionGroup == permission.GetType() && p.PermissionValue == permissionValue);
-            var isAllowedIndividually = IndividualPermissions.Any(p => p.PermissionGroup == permission.GetType() && p.PermissionValue == permissionValue && p.IsAllowed);
-            var isAllowedByGroup = Groups.Any(group => group.GetAllowedPermissions(permission.GetType()) == permissionValue);
+            var isRevoked = RevokedPermissions.Any(p => p.PermissionGroup == permission.GetType() && (p.PermissionValue & permissionValue) == permissionValue);
+            var isAllowedIndividually = IndividualPermissions.Any(p => p.PermissionGroup == permission.GetType() && (p.PermissionValue & permissionValue) == permissionValue && p.IsAllowed);
+            var isAllowedByGroup = Groups.Any(group => (group.GetAllowedPermissions(permission.GetType()) & permissionValue) == permissionValue);
 
             return !isRevoked && (isAllowedIndividually || isAllowedByGroup);
         }
