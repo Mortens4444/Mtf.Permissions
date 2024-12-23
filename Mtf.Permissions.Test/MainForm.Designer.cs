@@ -34,17 +34,19 @@
             listView1 = new ListView();
             columnHeader1 = new ColumnHeader();
             columnHeader2 = new ColumnHeader();
-            comboBox1 = new ComboBox();
+            contextMenuStrip1 = new ContextMenuStrip(components);
+            addToolStripMenuItem1 = new ToolStripMenuItem();
+            cbUser = new ComboBox();
             menuStrip1 = new MenuStrip();
             tsmiAdd = new ToolStripMenuItem();
             statusStrip1 = new StatusStrip();
             toolStripDropDownButton1 = new ToolStripDropDownButton();
             addToolStripMenuItem = new ToolStripMenuItem();
-            contextMenuStrip1 = new ContextMenuStrip(components);
-            addToolStripMenuItem1 = new ToolStripMenuItem();
+            btnRemove = new Button();
+            btnUpdate = new Button();
+            contextMenuStrip1.SuspendLayout();
             menuStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
-            contextMenuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // btnAdd
@@ -63,7 +65,7 @@
             listView1.ContextMenuStrip = contextMenuStrip1;
             listView1.Location = new Point(33, 78);
             listView1.Name = "listView1";
-            listView1.Size = new Size(211, 210);
+            listView1.Size = new Size(235, 210);
             listView1.TabIndex = 1;
             listView1.UseCompatibleStateImageBehavior = false;
             listView1.View = View.Details;
@@ -78,15 +80,28 @@
             columnHeader2.Text = "IP Address";
             columnHeader2.Width = 100;
             // 
-            // comboBox1
+            // contextMenuStrip1
             // 
-            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(33, 48);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(211, 23);
-            comboBox1.TabIndex = 2;
-            comboBox1.SelectedIndexChanged += ComboBox1_SelectedIndexChanged;
+            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { addToolStripMenuItem1 });
+            contextMenuStrip1.Name = "contextMenuStrip1";
+            contextMenuStrip1.Size = new Size(97, 26);
+            // 
+            // addToolStripMenuItem1
+            // 
+            addToolStripMenuItem1.Name = "addToolStripMenuItem1";
+            addToolStripMenuItem1.Size = new Size(96, 22);
+            addToolStripMenuItem1.Text = "Add";
+            addToolStripMenuItem1.Click += BtnAdd_Click;
+            // 
+            // cbUser
+            // 
+            cbUser.DropDownStyle = ComboBoxStyle.DropDownList;
+            cbUser.FormattingEnabled = true;
+            cbUser.Location = new Point(33, 48);
+            cbUser.Name = "cbUser";
+            cbUser.Size = new Size(235, 23);
+            cbUser.TabIndex = 2;
+            cbUser.SelectedIndexChanged += CbUser_SelectedIndexChanged;
             // 
             // menuStrip1
             // 
@@ -130,26 +145,35 @@
             addToolStripMenuItem.Text = "Add";
             addToolStripMenuItem.Click += BtnAdd_Click;
             // 
-            // contextMenuStrip1
+            // btnRemove
             // 
-            contextMenuStrip1.Items.AddRange(new ToolStripItem[] { addToolStripMenuItem1 });
-            contextMenuStrip1.Name = "contextMenuStrip1";
-            contextMenuStrip1.Size = new Size(97, 26);
+            btnRemove.Location = new Point(193, 294);
+            btnRemove.Name = "btnRemove";
+            btnRemove.Size = new Size(75, 23);
+            btnRemove.TabIndex = 5;
+            btnRemove.Text = "Remove";
+            btnRemove.UseVisualStyleBackColor = true;
+            btnRemove.MouseDown += BtnRemove_MouseDown;
             // 
-            // addToolStripMenuItem1
+            // btnUpdate
             // 
-            addToolStripMenuItem1.Name = "addToolStripMenuItem1";
-            addToolStripMenuItem1.Size = new Size(96, 22);
-            addToolStripMenuItem1.Text = "Add";
-            addToolStripMenuItem1.Click += BtnAdd_Click;
+            btnUpdate.Location = new Point(112, 294);
+            btnUpdate.Name = "btnUpdate";
+            btnUpdate.Size = new Size(75, 23);
+            btnUpdate.TabIndex = 6;
+            btnUpdate.Text = "Modify";
+            btnUpdate.UseVisualStyleBackColor = true;
+            btnUpdate.MouseClick += BtnUpdate_MouseClick;
             // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(415, 379);
+            Controls.Add(btnUpdate);
+            Controls.Add(btnRemove);
             Controls.Add(statusStrip1);
-            Controls.Add(comboBox1);
+            Controls.Add(cbUser);
             Controls.Add(listView1);
             Controls.Add(btnAdd);
             Controls.Add(menuStrip1);
@@ -157,11 +181,11 @@
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Test";
+            contextMenuStrip1.ResumeLayout(false);
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();
-            contextMenuStrip1.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
@@ -172,7 +196,7 @@
         private ListView listView1;
         private ColumnHeader columnHeader1;
         private ColumnHeader columnHeader2;
-        private ComboBox comboBox1;
+        private ComboBox cbUser;
         private MenuStrip menuStrip1;
         private ToolStripMenuItem tsmiAdd;
         private StatusStrip statusStrip1;
@@ -180,5 +204,7 @@
         private ToolStripMenuItem addToolStripMenuItem;
         private ContextMenuStrip contextMenuStrip1;
         private ToolStripMenuItem addToolStripMenuItem1;
+        private Button btnRemove;
+        private Button btnUpdate;
     }
 }

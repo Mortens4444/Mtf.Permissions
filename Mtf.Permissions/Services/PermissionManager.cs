@@ -41,7 +41,7 @@ namespace Mtf.Permissions.Services
             {
                 if (!CurrentUser.HasPermission(attribute))
                 {
-                    throw new UnauthorizedAccessException($"No permission for this operation: {method.Name}");
+                    throw new UnauthorizedAccessException($"No permission for this operation: {method.Name}. {attribute}");
                 }
             }
         }
@@ -216,35 +216,62 @@ namespace Mtf.Permissions.Services
                 throw new ArgumentNullException(nameof(control));
             }
 
-            var eventClickField = typeof(Control).GetField("s_clickEvent", BindingFlags.NonPublic | BindingFlags.Static)
-                                ?? typeof(Control).GetField("EventClick", BindingFlags.NonPublic | BindingFlags.Static)
-                                ?? typeof(Control).GetField("s_eventClick", BindingFlags.NonPublic | BindingFlags.Static);
+            var controlType = typeof(Control);
+            var eventClickField = controlType.GetField("s_clickEvent", BindingFlags.NonPublic | BindingFlags.Static)
+                                ?? controlType.GetField("EventClick", BindingFlags.NonPublic | BindingFlags.Static)
+                                ?? controlType.GetField("s_eventClick", BindingFlags.NonPublic | BindingFlags.Static);
 
+            var eventMouseClickField = controlType.GetField("s_mouseClickEvent", BindingFlags.NonPublic | BindingFlags.Static)
+                    ?? controlType.GetField("EventMouseClick", BindingFlags.NonPublic | BindingFlags.Static)
+                    ?? controlType.GetField("s_eventMouseClick", BindingFlags.NonPublic | BindingFlags.Static);
+
+            var eventMouseDownField = controlType.GetField("s_mouseDownEvent", BindingFlags.NonPublic | BindingFlags.Static)
+                                ?? controlType.GetField("EventMouseDown", BindingFlags.NonPublic | BindingFlags.Static)
+                                ?? controlType.GetField("s_eventMouseDown", BindingFlags.NonPublic | BindingFlags.Static);
+
+            var eventsProperty = controlType.GetProperty("Events", BindingFlags.NonPublic | BindingFlags.Instance);
             if (eventClickField != null)
             {
                 var eventClickKey = eventClickField.GetValue(null);
-                var eventsProperty = typeof(Control).GetProperty("Events", BindingFlags.NonPublic | BindingFlags.Instance);
-
                 if (eventsProperty?.GetValue(control) is EventHandlerList eventHandlers && eventClickKey != null)
                 {
                     if (eventHandlers[eventClickKey] is MulticastDelegate eventDelegate)
                     {
-                        foreach (var method in eventDelegate.GetInvocationList().Select(d => d.Method))
+                        if (EnableControlByDelegates(control, eventDelegate))
                         {
-                            if (method.DeclaringType != null)
-                            {
-                                var attributes = method.GetCustomAttributes<RequirePermissionAttribute>().ToList();
-                                if (attributes.Count > 0)
-                                {
-                                    control.Enabled = attributes.All(attr => CurrentUser?.HasPermission(attr) ?? false);
-                                    return;
-                                }
-                            }
+                            return;
                         }
                     }
                 }
             }
-
+            if (eventMouseClickField != null)
+            {
+                var eventMouseClickKey = eventMouseClickField.GetValue(null);
+                if (eventsProperty?.GetValue(control) is EventHandlerList eventHandlers && eventMouseClickKey != null)
+                {
+                    if (eventHandlers[eventMouseClickKey] is MulticastDelegate eventDelegate)
+                    {
+                        if (EnableControlByDelegates(control, eventDelegate))
+                        {
+                            return;
+                        }
+                    }
+                }
+            }
+            if (eventMouseDownField != null)
+            {
+                var eventMouseDownKey = eventMouseDownField.GetValue(null);
+                if (eventsProperty?.GetValue(control) is EventHandlerList eventHandlers && eventMouseDownKey != null)
+                {
+                    if (eventHandlers[eventMouseDownKey] is MulticastDelegate eventDelegate)
+                    {
+                        if (EnableControlByDelegates(control, eventDelegate))
+                        {
+                            return;
+                        }
+                    }
+                }
+            }
             if (control.Tag is string methodName)
             {
                 var attributes = GetRequiredPermissionAttributes(form, methodName);
@@ -258,6 +285,23 @@ namespace Mtf.Permissions.Services
             control.Enabled = true;
         }
 
+        private bool EnableControlByDelegates(Control control, MulticastDelegate eventDelegate)
+        {
+            foreach (var method in eventDelegate.GetInvocationList().Select(d => d.Method))
+            {
+                if (method.DeclaringType != null)
+                {
+                    var attributes = method.GetCustomAttributes<RequirePermissionAttribute>().ToList();
+                    if (attributes.Count > 0)
+                    {
+                        control.Enabled = attributes.All(attr => CurrentUser?.HasPermission(attr) ?? false);
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         public void SetEnabledProperty(Form form, ToolStripItem toolStripItem)
         {
             if (form == null)
@@ -269,36 +313,62 @@ namespace Mtf.Permissions.Services
                 throw new ArgumentNullException(nameof(toolStripItem));
             }
 
-            var eventClickField = typeof(ToolStripItem).GetField("s_clickEvent", BindingFlags.NonPublic | BindingFlags.Static)
-                                ?? typeof(ToolStripItem).GetField("EventClick", BindingFlags.NonPublic | BindingFlags.Static)
-                                ?? typeof(ToolStripItem).GetField("s_eventClick", BindingFlags.NonPublic | BindingFlags.Static);
+            var toolStripItemType = typeof(ToolStripItem);
+            var eventClickField = toolStripItemType.GetField("s_clickEvent", BindingFlags.NonPublic | BindingFlags.Static)
+                                ?? toolStripItemType.GetField("EventClick", BindingFlags.NonPublic | BindingFlags.Static)
+                                ?? toolStripItemType.GetField("s_eventClick", BindingFlags.NonPublic | BindingFlags.Static);
 
+            var eventMouseClickField = toolStripItemType.GetField("s_mouseClickEvent", BindingFlags.NonPublic | BindingFlags.Static)
+                    ?? toolStripItemType.GetField("EventMouseClick", BindingFlags.NonPublic | BindingFlags.Static)
+                    ?? toolStripItemType.GetField("s_eventMouseClick", BindingFlags.NonPublic | BindingFlags.Static);
+
+            var eventMouseDownField = toolStripItemType.GetField("s_mouseDownEvent", BindingFlags.NonPublic | BindingFlags.Static)
+                                ?? toolStripItemType.GetField("EventMouseDown", BindingFlags.NonPublic | BindingFlags.Static)
+                                ?? toolStripItemType.GetField("s_eventMouseDown", BindingFlags.NonPublic | BindingFlags.Static);
+
+            var eventsProperty = typeof(ToolStripItem).GetProperty("Events", BindingFlags.NonPublic | BindingFlags.Instance);
             if (eventClickField != null)
             {
                 var eventClickKey = eventClickField.GetValue(null);
-                var eventsProperty = typeof(ToolStripItem).GetProperty("Events", BindingFlags.NonPublic | BindingFlags.Instance);
-
                 if (eventsProperty?.GetValue(toolStripItem) is EventHandlerList eventHandlers && eventClickKey != null)
                 {
                     if (eventHandlers[eventClickKey] is MulticastDelegate eventDelegate)
                     {
-                        foreach (var method in eventDelegate.GetInvocationList().Select(d => d.Method))
+                        if (EnableToolStripItemByDelegates(toolStripItem, eventDelegate))
                         {
-                            if (method.DeclaringType != null)
-                            {
-                                var attributes = method.GetCustomAttributes<RequirePermissionAttribute>().ToList();
-                                if (attributes.Count > 0)
-                                {
-                                    toolStripItem.Enabled = attributes.All(attr => CurrentUser?.HasPermission(attr) ?? false);
-                                    return;
-                                }
-                            }
+                            return;
                         }
                     }
                 }
             }
-
-
+            if (eventMouseClickField != null)
+            {
+                var eventMouseClickKey = eventMouseClickField.GetValue(null);
+                if (eventsProperty?.GetValue(toolStripItem) is EventHandlerList eventHandlers && eventMouseClickKey != null)
+                {
+                    if (eventHandlers[eventMouseClickKey] is MulticastDelegate eventDelegate)
+                    {
+                        if (EnableToolStripItemByDelegates(toolStripItem, eventDelegate))
+                        {
+                            return;
+                        }
+                    }
+                }
+            }
+            if (eventMouseDownField != null)
+            {
+                var eventMouseDownKey = eventMouseDownField.GetValue(null);
+                if (eventsProperty?.GetValue(toolStripItem) is EventHandlerList eventHandlers && eventMouseDownKey != null)
+                {
+                    if (eventHandlers[eventMouseDownKey] is MulticastDelegate eventDelegate)
+                    {
+                        if (EnableToolStripItemByDelegates(toolStripItem, eventDelegate))
+                        {
+                            return;
+                        }
+                    }
+                }
+            }
             if (toolStripItem.Tag is string methodName)
             {
                 var attributes = GetRequiredPermissionAttributes(form, methodName);
@@ -307,6 +377,23 @@ namespace Mtf.Permissions.Services
                     toolStripItem.Enabled = attributes.All(attr => CurrentUser?.HasPermission(attr) ?? false);
                 }
             }
+        }
+
+        private bool EnableToolStripItemByDelegates(ToolStripItem toolStripItem, MulticastDelegate eventDelegate)
+        {
+            foreach (var method in eventDelegate.GetInvocationList().Select(d => d.Method))
+            {
+                if (method.DeclaringType != null)
+                {
+                    var attributes = method.GetCustomAttributes<RequirePermissionAttribute>().ToList();
+                    if (attributes.Count > 0)
+                    {
+                        toolStripItem.Enabled = attributes.All(attr => CurrentUser?.HasPermission(attr) ?? false);
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
 
         private static List<RequirePermissionAttribute> GetRequiredPermissionAttributes(Form form, string methodName)

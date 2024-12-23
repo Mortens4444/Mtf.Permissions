@@ -11,23 +11,26 @@ namespace Mtf.Permissions.Test
         private readonly PermissionManager permissionManager;
 
         private int serverIndex = 3;
-        
+
         private readonly User guest = new()
         {
             Username = "Guest",
             IndividualPermissions = []
         };
-        
+
         private readonly User member = new()
         {
             Username = "Group member",
+            IndividualPermissions = [
+                new Permission { PermissionGroup = typeof(ServerManagementPermissions), PermissionValue = (long)ServerManagementPermissions.Update, IsAllowed = false },
+            ],
             Groups =
             [
                 new Group
                 {
                     Permissions =
                     [
-                        new Permission { PermissionGroup = typeof(ServerManagementPermissions), PermissionValue = (long)ServerManagementPermissions.Select},
+                        new Permission { PermissionGroup = typeof(ServerManagementPermissions), PermissionValue = (long)ServerManagementPermissions.FullControl},
                         new Permission { PermissionGroup = typeof(WindowManagementPermissions), PermissionValue = (long)WindowManagementPermissions.Close}
                     ]
                 }
@@ -39,8 +42,7 @@ namespace Mtf.Permissions.Test
             Username = "Admin",
             IndividualPermissions =
             [
-                new Permission { PermissionGroup = typeof(ServerManagementPermissions), PermissionValue = (long)ServerManagementPermissions.Create },
-                new Permission { PermissionGroup = typeof(ServerManagementPermissions), PermissionValue = (long)ServerManagementPermissions.Select },
+                new Permission { PermissionGroup = typeof(ServerManagementPermissions), PermissionValue = (long)ServerManagementPermissions.FullControl },
                 new Permission { PermissionGroup = typeof(WindowManagementPermissions), PermissionValue = (long)WindowManagementPermissions.FullControl}
             ]
         };
@@ -50,8 +52,8 @@ namespace Mtf.Permissions.Test
             InitializeComponent();
             permissionManager = new PermissionManager();
 
-            comboBox1.Items.AddRange([guest, member, admin]);
-            comboBox1.SelectedIndex = 0;
+            cbUser.Items.AddRange([guest, member, admin]);
+            cbUser.SelectedIndex = 2;
         }
 
         [RequirePermission(ServerManagementPermissions.Select)]
@@ -85,9 +87,9 @@ namespace Mtf.Permissions.Test
             }
         }
 
-        private void ComboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void CbUser_SelectedIndexChanged(object sender, EventArgs e)
         {
-            permissionManager.SetUser(this, (User)comboBox1.SelectedItem!);
+            permissionManager.SetUser(this, (User)cbUser.SelectedItem!);
             LoadServers();
         }
 
@@ -117,7 +119,7 @@ namespace Mtf.Permissions.Test
                     {
                         return;
                     }
-                }                
+                }
                 else if (command == SC_MOVE)
                 {
                     if (!permissionManager.CurrentUser.HasPermission(WindowManagementPermissions.Move))
@@ -136,6 +138,34 @@ namespace Mtf.Permissions.Test
             }
 
             base.WndProc(ref m);
+        }
+
+        [RequirePermission(ServerManagementPermissions.Update)]
+        private void BtnUpdate_MouseClick(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                permissionManager.EnsurePermissions();
+                InfoBox.Show("Information", "Update implementation goes here.");
+            }
+            catch (Exception ex)
+            {
+                ErrorBox.Show(ex);
+            }
+        }
+
+        [RequirePermission(ServerManagementPermissions.Delete)]
+        private void BtnRemove_MouseDown(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                permissionManager.EnsurePermissions();
+                InfoBox.Show("Information", "Delete implementation goes here.");
+            }
+            catch (Exception ex)
+            {
+                ErrorBox.Show(ex);
+            }
         }
     }
 }
