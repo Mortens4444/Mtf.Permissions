@@ -18,6 +18,8 @@ namespace Mtf.Permissions.Models
 
         public List<Image> Images { get; set; } = new List<Image>();
 
+        public object Tag { get; set; }
+
         public bool HasPermissions(RequirePermissionAttribute requirePermissionAttribute)
         {
             if (requirePermissionAttribute == null)

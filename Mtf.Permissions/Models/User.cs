@@ -1,5 +1,4 @@
 ﻿using Mtf.Permissions.Attributes;
-using Mtf.Permissions.Enums;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -7,7 +6,9 @@ using System.Linq;
 
 namespace Mtf.Permissions.Models
 {
-    public class User
+    public class User : User<object> { }
+
+    public class User<T>
     {
         public int Id { get; set; }
 
@@ -30,6 +31,8 @@ namespace Mtf.Permissions.Models
         public List<Permission> RevokedPermissions => IndividualPermissions.Where(permission => !permission.IsAllowed).ToList();
 
         public List<Contact> Contacts { get; set; } = new List<Contact>();
+
+        public T Tag { get; set; }
 
         public bool HasPermission(Enum permission)
         {

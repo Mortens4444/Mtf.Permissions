@@ -3,22 +3,23 @@ using Mtf.Permissions.Attributes;
 using Mtf.Permissions.Enums;
 using Mtf.Permissions.Models;
 using Mtf.Permissions.Services;
+using Mtf.Permissions.Test.Dto;
 
 namespace Mtf.Permissions.Test
 {
     public partial class MainForm : Form
     {
-        private readonly PermissionManager permissionManager;
+        private readonly PermissionManager<UserDto> permissionManager;
 
         private int serverIndex = 3;
 
-        private readonly User guest = new()
+        private readonly User<UserDto> guest = new()
         {
             Username = "Guest",
             IndividualPermissions = []
         };
 
-        private readonly User member = new()
+        private readonly User<UserDto> member = new()
         {
             Username = "Group member",
             IndividualPermissions = [
@@ -37,7 +38,7 @@ namespace Mtf.Permissions.Test
             ]
         };
 
-        private readonly User admin = new()
+        private readonly User<UserDto> admin = new()
         {
             Username = "Admin",
             IndividualPermissions =
@@ -50,7 +51,7 @@ namespace Mtf.Permissions.Test
         public MainForm()
         {
             InitializeComponent();
-            permissionManager = new PermissionManager();
+            permissionManager = new PermissionManager<UserDto>();
 
             cbUser.Items.AddRange([guest, member, admin]);
             cbUser.SelectedIndex = 2;
@@ -89,7 +90,7 @@ namespace Mtf.Permissions.Test
 
         private void CbUser_SelectedIndexChanged(object sender, EventArgs e)
         {
-            permissionManager.SetUser(this, (User)cbUser.SelectedItem!);
+            permissionManager.SetUser(this, (User<UserDto>)cbUser.SelectedItem!);
             LoadServers();
         }
 

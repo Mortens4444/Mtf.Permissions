@@ -10,11 +10,11 @@ using System.Windows.Forms;
 
 namespace Mtf.Permissions.Services
 {
-    public class PermissionManager
+    public class PermissionManager<T>
     {
-        public User CurrentUser { get; private set; }
+        public User<T> CurrentUser { get; private set; }
 
-        public void SetUser(Form form, User currentUser)
+        public void SetUser(Form form, User<T> currentUser)
         {
             CurrentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
             ApplyPermissionsOnControls(form);
