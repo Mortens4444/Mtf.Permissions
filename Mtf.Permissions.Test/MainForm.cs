@@ -168,5 +168,10 @@ namespace Mtf.Permissions.Test
                 ErrorBox.Show(ex);
             }
         }
+
+        private void BtnLogout_Click(object sender, EventArgs e)
+        {
+            permissionManager.Logout(this);
+        }
     }
 }

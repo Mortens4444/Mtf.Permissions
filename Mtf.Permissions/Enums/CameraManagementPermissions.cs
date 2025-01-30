@@ -27,9 +27,9 @@ namespace Mtf.Permissions.Enums
         Preset = 0x1000,
         Pattern = 0x2000,
 
-        ChangeNosignalImage = 0x4000,
+        ChangeNoSignalImage = 0x4000,
         ExportCameraList = 0x8000,
 
-        FullControl = Select | Create | Update | Delete | OpenFullScreen | CloseFullScreen | OpenMotionPopup | MotionPopupSettings | PTZ | Preset | Pattern | ChangeNosignalImage | ExportCameraList
+        FullControl = Select | Create | Update | Delete | OpenFullScreen | CloseFullScreen | OpenMotionPopup | MotionPopupSettings | PTZ | Preset | Pattern | ChangeNoSignalImage | ExportCameraList
     }
 }

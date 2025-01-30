@@ -16,8 +16,13 @@ namespace Mtf.Permissions.Services
 
         public void SetUser(Form form, User<T> currentUser)
         {
-            CurrentUser = currentUser ?? throw new ArgumentNullException(nameof(currentUser));
+            CurrentUser = currentUser;
             ApplyPermissionsOnControls(form);
+        }
+
+        public void Logout(Form form)
+        {
+            SetUser(form, null);
         }
 
         /// <summary>

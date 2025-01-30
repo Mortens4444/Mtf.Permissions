@@ -44,6 +44,7 @@
             addToolStripMenuItem = new ToolStripMenuItem();
             btnRemove = new Button();
             btnUpdate = new Button();
+            btnLogout = new Button();
             contextMenuStrip1.SuspendLayout();
             menuStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
@@ -165,11 +166,22 @@
             btnUpdate.UseVisualStyleBackColor = true;
             btnUpdate.MouseClick += BtnUpdate_MouseClick;
             // 
+            // btnLogout
+            // 
+            btnLogout.Location = new Point(274, 78);
+            btnLogout.Name = "btnLogout";
+            btnLogout.Size = new Size(75, 23);
+            btnLogout.TabIndex = 7;
+            btnLogout.Text = "Logout";
+            btnLogout.UseVisualStyleBackColor = true;
+            btnLogout.Click += BtnLogout_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(415, 379);
+            Controls.Add(btnLogout);
             Controls.Add(btnUpdate);
             Controls.Add(btnRemove);
             Controls.Add(statusStrip1);
@@ -206,5 +218,6 @@
         private ToolStripMenuItem addToolStripMenuItem1;
         private Button btnRemove;
         private Button btnUpdate;
+        private Button btnLogout;
     }
 }
