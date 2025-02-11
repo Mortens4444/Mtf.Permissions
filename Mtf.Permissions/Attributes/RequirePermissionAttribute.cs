@@ -1,316 +1,111 @@
 ﻿using Mtf.Permissions.Enums;
 using System;
-using System.Linq;
 
 namespace Mtf.Permissions.Attributes
 {
-    [AttributeUsage(AttributeTargets.Method, AllowMultiple = true)]
-    public sealed class RequirePermissionAttribute : Attribute
+    public sealed class RequirePermissionAttribute : PermissionBaseAttribute
     {
-        public long PermissionValue { get; }
+        public RequirePermissionAttribute(ApplicationManagementPermissions permission) : base(permission) { }
 
-        public Type PermissionGroup { get; }
+        public RequirePermissionAttribute(CameraGroupPermissions_001_010 permission) : base(permission) { }
 
-        public RequirePermissionAttribute(ApplicationManagementPermissions permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(ApplicationManagementPermissions);
-        }
+        public RequirePermissionAttribute(CameraGroupPermissions_011_020 permission) : base(permission) { }
 
-        public RequirePermissionAttribute(CameraGroupPermissions_001_010 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_001_010);
-        }
+        public RequirePermissionAttribute(CameraGroupPermissions_021_030 permission) : base(permission) { }
 
-        public RequirePermissionAttribute(CameraGroupPermissions_011_020 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_011_020);
-        }
+        public RequirePermissionAttribute(CameraGroupPermissions_031_040 permission) : base(permission) { }
 
-        public RequirePermissionAttribute(CameraGroupPermissions_021_030 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_021_030);
-        }
+        public RequirePermissionAttribute(CameraGroupPermissions_041_050 permission) : base(permission) { }
 
-        public RequirePermissionAttribute(CameraGroupPermissions_031_040 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_031_040);
-        }
+        public RequirePermissionAttribute(CameraGroupPermissions_051_060 permission) : base(permission) { }
 
-        public RequirePermissionAttribute(CameraGroupPermissions_041_050 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_041_050);
-        }
+        public RequirePermissionAttribute(CameraGroupPermissions_061_070 permission) : base(permission) { }
 
-        public RequirePermissionAttribute(CameraGroupPermissions_051_060 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_051_060);
-        }
+        public RequirePermissionAttribute(CameraGroupPermissions_071_080 permission) : base(permission) { }
 
-        public RequirePermissionAttribute(CameraGroupPermissions_061_070 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_061_070);
-        }
+        public RequirePermissionAttribute(CameraGroupPermissions_081_090 permission) : base(permission) { }
 
-        public RequirePermissionAttribute(CameraGroupPermissions_071_080 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_071_080);
-        }
+        public RequirePermissionAttribute(CameraGroupPermissions_091_100 permission) : base(permission) { }
 
-        public RequirePermissionAttribute(CameraGroupPermissions_081_090 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_081_090);
-        }
+        public RequirePermissionAttribute(CameraGroupPermissions_101_110 permission) : base(permission) { }
 
-        public RequirePermissionAttribute(CameraGroupPermissions_091_100 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_091_100);
-        }
+        public RequirePermissionAttribute(CameraGroupPermissions_111_120 permission) : base(permission) { }
 
-        public RequirePermissionAttribute(CameraGroupPermissions_101_110 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_101_110);
-        }
+        public RequirePermissionAttribute(CameraGroupPermissions_121_130 permission) : base(permission) { }
 
-        public RequirePermissionAttribute(CameraGroupPermissions_111_120 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_111_120);
-        }
+        public RequirePermissionAttribute(CameraGroupPermissions_131_140 permission) : base(permission) { }
 
-        public RequirePermissionAttribute(CameraGroupPermissions_121_130 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_121_130);
-        }
+        public RequirePermissionAttribute(CameraGroupPermissions_141_150 permission) : base(permission) { }
 
-        public RequirePermissionAttribute(CameraGroupPermissions_131_140 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_131_140);
-        }
+        public RequirePermissionAttribute(CameraGroupPermissions_151_160 permission) : base(permission) { }
 
-        public RequirePermissionAttribute(CameraGroupPermissions_141_150 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_141_150);
-        }
+        public RequirePermissionAttribute(CameraGroupPermissions_161_170 permission) : base(permission) { }
 
-        public RequirePermissionAttribute(CameraGroupPermissions_151_160 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_151_160);
-        }
+        public RequirePermissionAttribute(CameraGroupPermissions_171_180 permission) : base(permission) { }
 
-        public RequirePermissionAttribute(CameraGroupPermissions_161_170 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_161_170);
-        }
+        public RequirePermissionAttribute(CameraGroupPermissions_181_190 permission) : base(permission) { }
 
-        public RequirePermissionAttribute(CameraGroupPermissions_171_180 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_171_180);
-        }
+        public RequirePermissionAttribute(CameraGroupPermissions_191_200 permission) : base(permission) { }
 
-        public RequirePermissionAttribute(CameraGroupPermissions_181_190 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_181_190);
-        }
+        public RequirePermissionAttribute(CameraGroupPermissions_201_210 permission) : base(permission) { }
 
-        public RequirePermissionAttribute(CameraGroupPermissions_191_200 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_191_200);
-        }
+        public RequirePermissionAttribute(CameraGroupPermissions_211_220 permission) : base(permission) { }
 
-        public RequirePermissionAttribute(CameraGroupPermissions_201_210 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_201_210);
-        }
+        public RequirePermissionAttribute(CameraGroupPermissions_221_230 permission) : base(permission) { }
 
-        public RequirePermissionAttribute(CameraGroupPermissions_211_220 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_211_220);
-        }
+        public RequirePermissionAttribute(CameraGroupPermissions_231_240 permission) : base(permission) { }
 
-        public RequirePermissionAttribute(CameraGroupPermissions_221_230 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_221_230);
-        }
+        public RequirePermissionAttribute(CameraGroupPermissions_241_250 permission) : base(permission) { }
 
-        public RequirePermissionAttribute(CameraGroupPermissions_231_240 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_231_240);
-        }
+        public RequirePermissionAttribute(CameraManagementPermissions permission) : base(permission) { }
 
-        public RequirePermissionAttribute(CameraGroupPermissions_241_250 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_241_250);
-        }
+        public RequirePermissionAttribute(DatabaseServerManagementPermissions permission) : base(permission) { }
 
-        public RequirePermissionAttribute(CameraManagementPermissions permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraManagementPermissions);
-        }
+        public RequirePermissionAttribute(DisplayManagementPermissions permission) : base(permission) { }
 
-        public RequirePermissionAttribute(DatabaseServerManagementPermissions permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(DatabaseServerManagementPermissions);
-        }
+        public RequirePermissionAttribute(EventManagementPermissions permission) : base(permission) { }
 
-        public RequirePermissionAttribute(DisplayManagementPermissions permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(DisplayManagementPermissions);
-        }
+        public RequirePermissionAttribute(GeneralPermissions permission) : base(permission) { }
 
-        public RequirePermissionAttribute(EventManagementPermissions permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(EventManagementPermissions);
-        }
+        public RequirePermissionAttribute(GridManagementPermissions permission) : base(permission) { }
 
-        public RequirePermissionAttribute(GeneralPermissions permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(GeneralPermissions);
-        }
+        public RequirePermissionAttribute(GroupManagementPermissions permission) : base(permission) { }
 
-        public RequirePermissionAttribute(GridManagementPermissions permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(GridManagementPermissions);
-        }
+        public RequirePermissionAttribute(HardwareManagementPermissions permission) : base(permission) { }
 
-        public RequirePermissionAttribute(GroupManagementPermissions permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(GroupManagementPermissions);
-        }
+        public RequirePermissionAttribute(IODeviceManagementPermissions permission) : base(permission) { }
 
-        public RequirePermissionAttribute(HardwareManagementPermissions permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(HardwareManagementPermissions);
-        }
+        public RequirePermissionAttribute(JoystickManagementPermissions permission) : base(permission) { }
 
-        public RequirePermissionAttribute(IODeviceManagementPermissions permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(IODeviceManagementPermissions);
-        }
+        public RequirePermissionAttribute(LanguageManagementPermissions permission) : base(permission) { }
 
-        public RequirePermissionAttribute(JoystickManagementPermissions permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(JoystickManagementPermissions);
-        }
+        public RequirePermissionAttribute(LogManagementPermissions permission) : base(permission) { }
 
-        public RequirePermissionAttribute(LanguageManagementPermissions permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(LanguageManagementPermissions);
-        }
+        public RequirePermissionAttribute(MapManagementPermissions permission) : base(permission) { }
 
-        public RequirePermissionAttribute(LogManagementPermissions permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(LogManagementPermissions);
-        }
+        public RequirePermissionAttribute(NetworkManagementPermissions permission) : base(permission) { }
 
-        public RequirePermissionAttribute(MapManagementPermissions permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(MapManagementPermissions);
-        }
+        public RequirePermissionAttribute(PasswordManagementPermissions permission) : base(permission) { }
 
-        public RequirePermissionAttribute(NetworkManagementPermissions permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(NetworkManagementPermissions);
-        }
+        public RequirePermissionAttribute(PermissionManagementPermissions permission) : base(permission) { }
 
-        public RequirePermissionAttribute(PasswordManagementPermissions permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(PasswordManagementPermissions);
-        }
+        public RequirePermissionAttribute(SequenceManagementPermissions permission) : base(permission) { }
 
-        public RequirePermissionAttribute(PermissionManagementPermissions permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(PermissionManagementPermissions);
-        }
+        public RequirePermissionAttribute(SerialDeviceManagementPermissions permission) : base(permission) { }
 
-        public RequirePermissionAttribute(SequenceManagementPermissions permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(SequenceManagementPermissions);
-        }
+        public RequirePermissionAttribute(ServerManagementPermissions permission) : base(permission) { }
 
-        public RequirePermissionAttribute(SerialDeviceManagementPermissions permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(SerialDeviceManagementPermissions);
-        }
+        public RequirePermissionAttribute(SettingsManagementPermissions permission) : base(permission) { }
 
-        public RequirePermissionAttribute(ServerManagementPermissions permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(ServerManagementPermissions);
-        }
+        public RequirePermissionAttribute(TemplateManagementPermissions permission) : base(permission) { }
 
-        public RequirePermissionAttribute(SettingsManagementPermissions permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(SettingsManagementPermissions);
-        }
+        public RequirePermissionAttribute(UserManagementPermissions permission) : base(permission) { }
 
-        public RequirePermissionAttribute(TemplateManagementPermissions permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(TemplateManagementPermissions);
-        }
-
-        public RequirePermissionAttribute(UserManagementPermissions permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(UserManagementPermissions);
-        }
-
-        public RequirePermissionAttribute(WindowManagementPermissions permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(WindowManagementPermissions);
-        }
+        public RequirePermissionAttribute(WindowManagementPermissions permission) : base(permission) { }
 
         public override string ToString()
         {
-            var permissionNames = Enum.GetValues(PermissionGroup)
-                .Cast<Enum>()
-                .Where(value => (PermissionValue & Convert.ToInt64(value)) != 0)
-                .Select(value => value.ToString());
+            var permissionNames = GetPermissionNames();
             return $"Required permission: {PermissionGroup.Name} ({String.Join(", ", permissionNames)})";
         }
     }

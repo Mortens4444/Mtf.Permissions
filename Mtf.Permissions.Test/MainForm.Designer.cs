@@ -45,6 +45,7 @@
             btnRemove = new Button();
             btnUpdate = new Button();
             btnLogout = new Button();
+            btnAddOrModify = new Button();
             contextMenuStrip1.SuspendLayout();
             menuStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
@@ -176,11 +177,22 @@
             btnLogout.UseVisualStyleBackColor = true;
             btnLogout.Click += BtnLogout_Click;
             // 
+            // btnAddOrModify
+            // 
+            btnAddOrModify.Location = new Point(33, 323);
+            btnAddOrModify.Name = "btnAddOrModify";
+            btnAddOrModify.Size = new Size(154, 23);
+            btnAddOrModify.TabIndex = 8;
+            btnAddOrModify.Text = "Add/Modify";
+            btnAddOrModify.UseVisualStyleBackColor = true;
+            btnAddOrModify.Click += BtnAddOrModify_Click;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(415, 379);
+            Controls.Add(btnAddOrModify);
             Controls.Add(btnLogout);
             Controls.Add(btnUpdate);
             Controls.Add(btnRemove);
@@ -219,5 +231,6 @@
         private Button btnRemove;
         private Button btnUpdate;
         private Button btnLogout;
+        private Button btnAddOrModify;
     }
 }

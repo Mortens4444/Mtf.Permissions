@@ -48,12 +48,32 @@ namespace Mtf.Permissions.Test
             ]
         };
 
+        private readonly User<UserDto> serverCreator = new()
+        {
+            Username = "ServerCreator",
+            IndividualPermissions =
+            [
+                new Permission { PermissionGroup = typeof(ServerManagementPermissions), PermissionValue = (long)ServerManagementPermissions.Select },
+                new Permission { PermissionGroup = typeof(ServerManagementPermissions), PermissionValue = (long)ServerManagementPermissions.Create }
+            ]
+        };
+
+        private readonly User<UserDto> serverUpdater = new()
+        {
+            Username = "ServerUpdater",
+            IndividualPermissions =
+            [
+                new Permission { PermissionGroup = typeof(ServerManagementPermissions), PermissionValue = (long)ServerManagementPermissions.Select },
+                new Permission { PermissionGroup = typeof(ServerManagementPermissions), PermissionValue = (long)ServerManagementPermissions.Update }
+            ]
+        };
+
         public MainForm()
         {
             InitializeComponent();
             permissionManager = new PermissionManager<UserDto>();
 
-            cbUser.Items.AddRange([guest, member, admin]);
+            cbUser.Items.AddRange([guest, member, admin, serverCreator, serverUpdater]);
             cbUser.SelectedIndex = 2;
         }
 
@@ -172,6 +192,15 @@ namespace Mtf.Permissions.Test
         private void BtnLogout_Click(object sender, EventArgs e)
         {
             permissionManager.Logout(this);
+        }
+
+        [RequireAnyPermission(ServerManagementPermissions.Create)]
+        [RequireAnyPermission(ServerManagementPermissions.Update)]
+        //[RequireAnyPermission(ServerManagementPermissions.Create | ServerManagementPermissions.Update)]
+        private void BtnAddOrModify_Click(object sender, EventArgs e)
+        {
+            permissionManager.EnsurePermissions();
+            InfoBox.Show("Information", "Add or update implementation goes here.");
         }
     }
 }

@@ -30,6 +30,18 @@ namespace Mtf.Permissions.Enums
         ChangeNoSignalImage = 0x4000,
         ExportCameraList = 0x8000,
 
+        Play = 0x10000,
+        Stop = 0x20000,
+        Rewind = 0x40000,
+        FastForward = 0x80000,
+        Pause = 0x100000,
+        Previous = 0x200000,
+        Next = 0x400000,
+        GoTo = 0x800000,
+
+        SyncronView = 0x1000000,
+
         FullControl = Select | Create | Update | Delete | OpenFullScreen | CloseFullScreen | OpenMotionPopup | MotionPopupSettings | PTZ | Preset | Pattern | ChangeNoSignalImage | ExportCameraList
+            | Play | Stop | Rewind | FastForward | Pause | Previous | Next | GoTo | SyncronView
     }
 }

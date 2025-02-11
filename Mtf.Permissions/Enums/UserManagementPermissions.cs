@@ -10,6 +10,9 @@ namespace Mtf.Permissions.Enums
         Create = 0x2,
         Update = 0x4,
         Delete = 0x8,
-        FullControl = Select | Create | Update | Delete
+        Login = 0x10,
+        Logout = 0x20,
+        AutoLogin = 0x40,
+        FullControl = Select | Create | Update | Delete | Login | Logout | AutoLogin
     }
 }

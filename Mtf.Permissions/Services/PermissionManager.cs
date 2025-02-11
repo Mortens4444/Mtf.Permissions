@@ -49,6 +49,21 @@ namespace Mtf.Permissions.Services
                     throw new UnauthorizedAccessException($"No permission for this operation: {method.Name}. {attribute}");
                 }
             }
+
+            var hasPermission = false;
+            var anyAttributes = method.GetCustomAttributes<RequireAnyPermissionAttribute>();
+            foreach (var attribute in anyAttributes)
+            {
+                if (CurrentUser.HasPermission(attribute))
+                {
+                    hasPermission = true;
+                    break;
+                }
+            }
+            if (anyAttributes.Any() && !hasPermission)
+            {
+                throw new UnauthorizedAccessException($"No permission for any of these operations: {method.Name}. {anyAttributes}");
+            }
         }
 
         /// <summary>
@@ -167,6 +182,15 @@ namespace Mtf.Permissions.Services
                                 {
                                     menuItem.Enabled = attributes.All(attr => CurrentUser?.HasPermission(attr) ?? false);
                                     return;
+                                }
+                                else
+                                {
+                                    var anyAttributes = method.GetCustomAttributes<RequireAnyPermissionAttribute>().ToList();
+                                    if (anyAttributes.Count > 0)
+                                    {
+                                        menuItem.Enabled = anyAttributes.Any(attr => CurrentUser?.HasPermission(attr) ?? false);
+                                        return;
+                                    }
                                 }
                             }
                         }
@@ -302,6 +326,15 @@ namespace Mtf.Permissions.Services
                         control.Enabled = attributes.All(attr => CurrentUser?.HasPermission(attr) ?? false);
                         return true;
                     }
+                    else
+                    {
+                        var anyAttributes = method.GetCustomAttributes<RequireAnyPermissionAttribute>().ToList();
+                        if (anyAttributes.Count > 0)
+                        {
+                            control.Enabled = anyAttributes.Any(attr => CurrentUser?.HasPermission(attr) ?? false);
+                            return true;
+                        }
+                    }
                 }
             }
             return false;
@@ -395,6 +428,15 @@ namespace Mtf.Permissions.Services
                     {
                         toolStripItem.Enabled = attributes.All(attr => CurrentUser?.HasPermission(attr) ?? false);
                         return true;
+                    }
+                    else
+                    {
+                        var anyAttributes = method.GetCustomAttributes<RequireAnyPermissionAttribute>().ToList();
+                        if (anyAttributes.Count > 0)
+                        {
+                            toolStripItem.Enabled = anyAttributes.Any(attr => CurrentUser?.HasPermission(attr) ?? false);
+                            return true;
+                        }
                     }
                 }
             }

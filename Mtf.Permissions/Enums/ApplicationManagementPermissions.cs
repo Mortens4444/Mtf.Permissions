@@ -9,6 +9,7 @@ namespace Mtf.Permissions.Enums
         Start = 0x1,
         Restart = 0x2,
         Exit = 0x4,
-        FullControl = Start | Restart | Exit
+        Upgrade = 0x8,
+        FullControl = Start | Restart | Exit | Upgrade
     }
 }

@@ -45,6 +45,35 @@ namespace Mtf.Permissions.Models
             return !isRevoked && (isAllowedIndividually || isAllowedByGroup);
         }
 
+        public bool HasPermission(RequireAnyPermissionAttribute requiredPermission)
+        {
+            if (requiredPermission == null)
+            {
+                throw new ArgumentNullException(nameof(requiredPermission));
+            }
+
+            var requiredGroup = requiredPermission.PermissionGroup;
+            var requiredValue = requiredPermission.PermissionValue;
+
+            var allowedPermissions = IndividualPermissions
+                .Where(p => p.PermissionGroup == requiredGroup && p.IsAllowed)
+                .Select(p => p.PermissionValue)
+                .Aggregate(0L, (current, permission) => current | permission);
+
+            foreach (var group in Groups)
+            {
+                allowedPermissions |= group.GetAllowedPermissions(requiredGroup);
+            }
+
+            var revokedPermissions = IndividualPermissions
+                .Where(p => p.PermissionGroup == requiredGroup && !p.IsAllowed)
+                .Select(p => p.PermissionValue)
+                .Aggregate(0L, (current, permission) => current | permission);
+
+            var effectiveAllowed = allowedPermissions & ~revokedPermissions;
+            return (effectiveAllowed & requiredValue) != 0;
+        }
+
         public bool HasPermission(RequirePermissionAttribute requiredPermission)
         {
             if (requiredPermission == null)
