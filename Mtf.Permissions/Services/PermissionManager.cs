@@ -51,18 +51,22 @@ namespace Mtf.Permissions.Services
             }
 
             var hasPermission = false;
-            var anyAttributes = method.GetCustomAttributes<RequireAnyPermissionAttribute>();
-            foreach (var attribute in anyAttributes)
+            var anyAttributes = method.GetCustomAttributes<RequireAnyPermissionAttribute>().ToList();
+
+            if (anyAttributes.Count != 0)
             {
-                if (CurrentUser.HasPermission(attribute))
+                foreach (var attribute in anyAttributes)
                 {
-                    hasPermission = true;
-                    break;
+                    if (CurrentUser.HasPermission(attribute))
+                    {
+                        hasPermission = true;
+                        break;
+                    }
                 }
-            }
-            if (anyAttributes.Any() && !hasPermission)
-            {
-                throw new UnauthorizedAccessException($"No permission for any of these operations: {method.Name}. {anyAttributes}");
+                if (!hasPermission)
+                {
+                    throw new UnauthorizedAccessException($"No permission for any of these operations: {method.Name}. {anyAttributes}");
+                }
             }
         }
 
