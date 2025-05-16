@@ -40,15 +40,26 @@ namespace Mtf.Permissions.Services
     {
         public User<T> CurrentUser { get; private set; }
 
-        public void SetUser(Form form, User<T> currentUser)
+        public void LoginWithForm(User<T> currentUser, Form form)
         {
-            CurrentUser = currentUser;
+            Login(currentUser);
             ApplyPermissionsOnControls(form);
         }
 
-        public void Logout(Form form)
+        public void LogoutWithForm(Form form)
         {
-            SetUser(form, null);
+            Logout();
+            ApplyPermissionsOnControls(form);
+        }
+
+        public void Login(User<T> currentUser)
+        {
+            CurrentUser = currentUser;
+        }
+
+        public void Logout()
+        {
+            CurrentUser = null;
         }
 
         public bool HasPermission(Enum permission)

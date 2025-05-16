@@ -113,7 +113,7 @@ namespace Mtf.Permissions.Test
 
         private void CbUser_SelectedIndexChanged(object sender, EventArgs e)
         {
-            permissionManager.SetUser(this, (User<UserDto>)cbUser.SelectedItem!);
+            permissionManager.LoginWithForm((User<UserDto>)cbUser.SelectedItem!, this);
             LoadServers();
         }
 
@@ -194,7 +194,7 @@ namespace Mtf.Permissions.Test
 
         private void BtnLogout_Click(object sender, EventArgs e)
         {
-            permissionManager.Logout(this);
+            permissionManager.LogoutWithForm(this);
         }
 
         [RequireAnyPermission(ServerManagementPermissions.Create)]
