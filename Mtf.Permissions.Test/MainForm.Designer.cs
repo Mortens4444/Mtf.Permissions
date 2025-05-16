@@ -46,6 +46,8 @@
             btnUpdate = new Button();
             btnLogout = new Button();
             btnAddOrModify = new Button();
+            chkCamera1 = new CheckBox();
+            chkCamera2 = new CheckBox();
             contextMenuStrip1.SuspendLayout();
             menuStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
@@ -187,11 +189,35 @@
             btnAddOrModify.UseVisualStyleBackColor = true;
             btnAddOrModify.Click += BtnAddOrModify_Click;
             // 
+            // chkCamera1
+            // 
+            chkCamera1.AutoCheck = false;
+            chkCamera1.AutoSize = true;
+            chkCamera1.Location = new Point(274, 107);
+            chkCamera1.Name = "chkCamera1";
+            chkCamera1.Size = new Size(76, 19);
+            chkCamera1.TabIndex = 9;
+            chkCamera1.Text = "Camera 1";
+            chkCamera1.UseVisualStyleBackColor = true;
+            // 
+            // chkCamera2
+            // 
+            chkCamera2.AutoCheck = false;
+            chkCamera2.AutoSize = true;
+            chkCamera2.Location = new Point(274, 132);
+            chkCamera2.Name = "chkCamera2";
+            chkCamera2.Size = new Size(76, 19);
+            chkCamera2.TabIndex = 10;
+            chkCamera2.Text = "Camera 2";
+            chkCamera2.UseVisualStyleBackColor = true;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(415, 379);
+            Controls.Add(chkCamera2);
+            Controls.Add(chkCamera1);
             Controls.Add(btnAddOrModify);
             Controls.Add(btnLogout);
             Controls.Add(btnUpdate);
@@ -232,5 +258,7 @@
         private Button btnUpdate;
         private Button btnLogout;
         private Button btnAddOrModify;
+        private CheckBox chkCamera1;
+        private CheckBox chkCamera2;
     }
 }

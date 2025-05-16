@@ -44,7 +44,8 @@ namespace Mtf.Permissions.Test
             IndividualPermissions =
             [
                 new Permission { PermissionGroup = typeof(ServerManagementPermissions), PermissionValue = (long)ServerManagementPermissions.FullControl },
-                new Permission { PermissionGroup = typeof(WindowManagementPermissions), PermissionValue = (long)WindowManagementPermissions.FullControl}
+                new Permission { PermissionGroup = typeof(WindowManagementPermissions), PermissionValue = (long)WindowManagementPermissions.FullControl},
+                new Permission { PermissionGroup = typeof(CameraGroupPermissions_001_010), PermissionValue = (long)CameraGroupPermissions_001_010.Camera_001}
             ]
         };
 
@@ -83,6 +84,8 @@ namespace Mtf.Permissions.Test
             try
             {
                 listView1.Items.Clear();
+                chkCamera1.Checked = permissionManager.HasCameraPermission(0);
+                chkCamera2.Checked = permissionManager.HasCameraPermission(1);
                 permissionManager.EnsurePermissions();
                 listView1.Items.Add(new ListViewItem(["Server 1", "192.168.0.1"]));
                 listView1.Items.Add(new ListViewItem(["Server 2", "192.168.0.2"]));
@@ -125,7 +128,7 @@ namespace Mtf.Permissions.Test
 
             if (m.Msg == WM_NCLBUTTONDOWN && m.WParam.ToInt32() == HTCAPTION)
             {
-                if (!permissionManager.CurrentUser.HasPermission(WindowManagementPermissions.Move))
+                if (!(permissionManager.CurrentUser?.HasPermission(WindowManagementPermissions.Move) ?? false))
                 {
                     return;
                 }
@@ -136,14 +139,14 @@ namespace Mtf.Permissions.Test
                 var command = m.WParam.ToInt32() & 0xFFF0;
                 if (command == SC_SIZE)
                 {
-                    if (!permissionManager.CurrentUser.HasPermission(WindowManagementPermissions.Resize))
+                    if (!(permissionManager.CurrentUser?.HasPermission(WindowManagementPermissions.Resize) ?? false))
                     {
                         return;
                     }
                 }
                 else if (command == SC_MOVE)
                 {
-                    if (!permissionManager.CurrentUser.HasPermission(WindowManagementPermissions.Move))
+                    if (!(permissionManager.CurrentUser?.HasPermission(WindowManagementPermissions.Move) ?? false))
                     {
                         return;
                     }
@@ -152,7 +155,7 @@ namespace Mtf.Permissions.Test
 
             if (m.Msg == WM_CLOSE)
             {
-                if (!permissionManager.CurrentUser.HasPermission(WindowManagementPermissions.Close))
+                if (!(permissionManager.CurrentUser?.HasPermission(WindowManagementPermissions.Close) ?? false))
                 {
                     return;
                 }

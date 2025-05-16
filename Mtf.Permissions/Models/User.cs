@@ -1,4 +1,5 @@
 ﻿using Mtf.Permissions.Attributes;
+using Mtf.Permissions.Services;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -105,6 +106,12 @@ namespace Mtf.Permissions.Models
             }
 
             return (allowedPermissions & requiredValue) == requiredValue;
+        }
+
+        public bool HasCameraPermission(long cameraPermissionIndex)
+        {
+            var cameraPermissionValue = PermissionManager.GetCameraPermissionValue(cameraPermissionIndex);
+            return HasPermission((Enum)cameraPermissionValue);
         }
 
         public override string ToString()

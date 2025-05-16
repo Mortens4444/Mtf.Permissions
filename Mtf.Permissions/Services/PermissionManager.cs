@@ -1,4 +1,5 @@
 ﻿using Mtf.Permissions.Attributes;
+using Mtf.Permissions.Enums;
 using Mtf.Permissions.Models;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,31 @@ using System.Windows.Forms;
 
 namespace Mtf.Permissions.Services
 {
+    public class PermissionManager
+    {
+        private const int CameraGroupPermissionRangeSize = 10;
+
+        public static string GetCameraGroupPermissionName(long permissionCameraValue)
+        {
+            var start = permissionCameraValue / CameraGroupPermissionRangeSize * CameraGroupPermissionRangeSize + 1;
+            var end = start + CameraGroupPermissionRangeSize - 1;
+            return String.Format("CameraGroupPermissions_{0:D3}_{1:D3}", start, end);
+        }
+
+        public static object GetCameraPermissionValue(long cameraPermissionIndex)
+        {
+            var permissionType = typeof(CameraGroupPermissions_001_010);
+            var assembly = permissionType.Assembly;
+            var cameraGroupEnumType = assembly.GetType($"{permissionType.Namespace}.{GetCameraGroupPermissionName(cameraPermissionIndex)}");
+            var cameraPermissionName = $"Camera_{cameraPermissionIndex + 1:D3}";
+            if (cameraGroupEnumType != null)
+            {
+                return Enum.Parse(cameraGroupEnumType, cameraPermissionName);
+            }
+            return null;
+        }
+    }
+
     public class PermissionManager<T>
     {
         public User<T> CurrentUser { get; private set; }
@@ -25,6 +51,31 @@ namespace Mtf.Permissions.Services
             SetUser(form, null);
         }
 
+        public bool HasPermission(Enum permission)
+        {
+            if (CurrentUser == null)
+            {
+                return false;
+            }
+
+            return CurrentUser.HasPermission(permission);
+        }
+
+        /// <summary>
+        /// Note that Camera_001 corresponds to index 0.
+        /// </summary>
+        /// <param name="cameraPermissionIndex">Zero-based index of the camera to check.</param>
+        /// <returns>True if the CurrentUser has access to the camera.</returns>
+        public bool HasCameraPermission(long cameraPermissionIndex)
+        {
+            if (CurrentUser == null)
+            {
+                return false;
+            }
+
+            return CurrentUser.HasCameraPermission(cameraPermissionIndex);
+        }
+
         /// <summary>
         /// Ensures that the user has the necessary permission to execute the method.
         /// </summary>
@@ -32,6 +83,11 @@ namespace Mtf.Permissions.Services
         /// <exception cref="UnauthorizedAccessException">Thrown if the user does not have permission for the method.</exception>
         public void EnsurePermissions()
         {
+            if (CurrentUser == null)
+            {
+                throw new UnauthorizedAccessException($"User not logged in.");
+            }
+
             var stackTrace = new StackTrace();
             var frame = stackTrace.GetFrame(1);
             var method = frame?.GetMethod() ?? throw new InvalidOperationException("Caller method not found");
