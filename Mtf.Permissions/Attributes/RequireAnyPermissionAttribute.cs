@@ -7,55 +7,25 @@ namespace Mtf.Permissions.Attributes
     {
         public RequireAnyPermissionAttribute(ApplicationManagementPermissions permission) : base(permission) { }
 
-        public RequireAnyPermissionAttribute(CameraGroupPermissions_001_010 permission) : base(permission) { }
+        public RequireAnyPermissionAttribute(CameraGroupPermissions_001_060 permission) : base(permission) { }
 
-        public RequireAnyPermissionAttribute(CameraGroupPermissions_011_020 permission) : base(permission) { }
+        public RequireAnyPermissionAttribute(CameraGroupPermissions_061_120 permission) : base(permission) { }
 
-        public RequireAnyPermissionAttribute(CameraGroupPermissions_021_030 permission) : base(permission) { }
+        public RequireAnyPermissionAttribute(CameraGroupPermissions_121_180 permission) : base(permission) { }
 
-        public RequireAnyPermissionAttribute(CameraGroupPermissions_031_040 permission) : base(permission) { }
+        public RequireAnyPermissionAttribute(CameraGroupPermissions_181_240 permission) : base(permission) { }
 
-        public RequireAnyPermissionAttribute(CameraGroupPermissions_041_050 permission) : base(permission) { }
+        public RequireAnyPermissionAttribute(CameraGroupPermissions_241_300 permission) : base(permission) { }
 
-        public RequireAnyPermissionAttribute(CameraGroupPermissions_051_060 permission) : base(permission) { }
+        public RequireAnyPermissionAttribute(CameraGroupPermissions_301_360 permission) : base(permission) { }
 
-        public RequireAnyPermissionAttribute(CameraGroupPermissions_061_070 permission) : base(permission) { }
+        public RequireAnyPermissionAttribute(CameraGroupPermissions_361_420 permission) : base(permission) { }
 
-        public RequireAnyPermissionAttribute(CameraGroupPermissions_071_080 permission) : base(permission) { }
+        public RequireAnyPermissionAttribute(CameraGroupPermissions_421_480 permission) : base(permission) { }
 
-        public RequireAnyPermissionAttribute(CameraGroupPermissions_081_090 permission) : base(permission) { }
+        public RequireAnyPermissionAttribute(CameraGroupPermissions_481_540 permission) : base(permission) { }
 
-        public RequireAnyPermissionAttribute(CameraGroupPermissions_091_100 permission) : base(permission) { }
-
-        public RequireAnyPermissionAttribute(CameraGroupPermissions_101_110 permission) : base(permission) { }
-
-        public RequireAnyPermissionAttribute(CameraGroupPermissions_111_120 permission) : base(permission) { }
-
-        public RequireAnyPermissionAttribute(CameraGroupPermissions_121_130 permission) : base(permission) { }
-
-        public RequireAnyPermissionAttribute(CameraGroupPermissions_131_140 permission) : base(permission) { }
-
-        public RequireAnyPermissionAttribute(CameraGroupPermissions_141_150 permission) : base(permission) { }
-
-        public RequireAnyPermissionAttribute(CameraGroupPermissions_151_160 permission) : base(permission) { }
-
-        public RequireAnyPermissionAttribute(CameraGroupPermissions_161_170 permission) : base(permission) { }
-
-        public RequireAnyPermissionAttribute(CameraGroupPermissions_171_180 permission) : base(permission) { }
-
-        public RequireAnyPermissionAttribute(CameraGroupPermissions_181_190 permission) : base(permission) { }
-        
-        public RequireAnyPermissionAttribute(CameraGroupPermissions_191_200 permission) : base(permission) { }
-
-        public RequireAnyPermissionAttribute(CameraGroupPermissions_201_210 permission) : base(permission) { }
-
-        public RequireAnyPermissionAttribute(CameraGroupPermissions_211_220 permission) : base(permission) { }
-
-        public RequireAnyPermissionAttribute(CameraGroupPermissions_221_230 permission) : base(permission) { }
-
-        public RequireAnyPermissionAttribute(CameraGroupPermissions_231_240 permission) : base(permission) { }
-
-        public RequireAnyPermissionAttribute(CameraGroupPermissions_241_250 permission) : base(permission) { }
+        public RequireAnyPermissionAttribute(CameraGroupPermissions_541_600 permission) : base(permission) { }
 
         public RequireAnyPermissionAttribute(CameraManagementPermissions permission) : base(permission) { }
 

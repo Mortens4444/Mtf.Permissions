@@ -18,154 +18,64 @@ namespace Mtf.Permissions.Attributes
             PermissionGroup = typeof(ApplicationManagementPermissions);
         }
 
-        public PermissionBaseAttribute(CameraGroupPermissions_001_010 permission)
+        public PermissionBaseAttribute(CameraGroupPermissions_001_060 permission)
         {
             PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_001_010);
+            PermissionGroup = typeof(CameraGroupPermissions_001_060);
         }
 
-        public PermissionBaseAttribute(CameraGroupPermissions_011_020 permission)
+        public PermissionBaseAttribute(CameraGroupPermissions_061_120 permission)
         {
             PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_011_020);
+            PermissionGroup = typeof(CameraGroupPermissions_061_120);
         }
 
-        public PermissionBaseAttribute(CameraGroupPermissions_021_030 permission)
+        public PermissionBaseAttribute(CameraGroupPermissions_121_180 permission)
         {
             PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_021_030);
+            PermissionGroup = typeof(CameraGroupPermissions_121_180);
         }
 
-        public PermissionBaseAttribute(CameraGroupPermissions_031_040 permission)
+        public PermissionBaseAttribute(CameraGroupPermissions_181_240 permission)
         {
             PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_031_040);
+            PermissionGroup = typeof(CameraGroupPermissions_181_240);
         }
 
-        public PermissionBaseAttribute(CameraGroupPermissions_041_050 permission)
+        public PermissionBaseAttribute(CameraGroupPermissions_241_300 permission)
         {
             PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_041_050);
+            PermissionGroup = typeof(CameraGroupPermissions_241_300);
         }
 
-        public PermissionBaseAttribute(CameraGroupPermissions_051_060 permission)
+        public PermissionBaseAttribute(CameraGroupPermissions_301_360 permission)
         {
             PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_051_060);
+            PermissionGroup = typeof(CameraGroupPermissions_301_360);
         }
 
-        public PermissionBaseAttribute(CameraGroupPermissions_061_070 permission)
+        public PermissionBaseAttribute(CameraGroupPermissions_361_420 permission)
         {
             PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_061_070);
+            PermissionGroup = typeof(CameraGroupPermissions_361_420);
         }
 
-        public PermissionBaseAttribute(CameraGroupPermissions_071_080 permission)
+        public PermissionBaseAttribute(CameraGroupPermissions_421_480 permission)
         {
             PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_071_080);
+            PermissionGroup = typeof(CameraGroupPermissions_421_480);
         }
 
-        public PermissionBaseAttribute(CameraGroupPermissions_081_090 permission)
+        public PermissionBaseAttribute(CameraGroupPermissions_481_540 permission)
         {
             PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_081_090);
+            PermissionGroup = typeof(CameraGroupPermissions_481_540);
         }
 
-        public PermissionBaseAttribute(CameraGroupPermissions_091_100 permission)
+        public PermissionBaseAttribute(CameraGroupPermissions_541_600 permission)
         {
             PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_091_100);
-        }
-
-        public PermissionBaseAttribute(CameraGroupPermissions_101_110 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_101_110);
-        }
-
-        public PermissionBaseAttribute(CameraGroupPermissions_111_120 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_111_120);
-        }
-
-        public PermissionBaseAttribute(CameraGroupPermissions_121_130 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_121_130);
-        }
-
-        public PermissionBaseAttribute(CameraGroupPermissions_131_140 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_131_140);
-        }
-
-        public PermissionBaseAttribute(CameraGroupPermissions_141_150 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_141_150);
-        }
-
-        public PermissionBaseAttribute(CameraGroupPermissions_151_160 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_151_160);
-        }
-
-        public PermissionBaseAttribute(CameraGroupPermissions_161_170 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_161_170);
-        }
-
-        public PermissionBaseAttribute(CameraGroupPermissions_171_180 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_171_180);
-        }
-
-        public PermissionBaseAttribute(CameraGroupPermissions_181_190 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_181_190);
-        }
-
-        public PermissionBaseAttribute(CameraGroupPermissions_191_200 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_191_200);
-        }
-
-        public PermissionBaseAttribute(CameraGroupPermissions_201_210 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_201_210);
-        }
-
-        public PermissionBaseAttribute(CameraGroupPermissions_211_220 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_211_220);
-        }
-
-        public PermissionBaseAttribute(CameraGroupPermissions_221_230 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_221_230);
-        }
-
-        public PermissionBaseAttribute(CameraGroupPermissions_231_240 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_231_240);
-        }
-
-        public PermissionBaseAttribute(CameraGroupPermissions_241_250 permission)
-        {
-            PermissionValue = (long)permission;
-            PermissionGroup = typeof(CameraGroupPermissions_241_250);
+            PermissionGroup = typeof(CameraGroupPermissions_541_600);
         }
 
         public PermissionBaseAttribute(CameraManagementPermissions permission)

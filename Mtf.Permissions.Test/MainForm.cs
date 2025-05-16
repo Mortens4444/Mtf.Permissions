@@ -45,7 +45,7 @@ namespace Mtf.Permissions.Test
             [
                 new Permission { PermissionGroup = typeof(ServerManagementPermissions), PermissionValue = (long)ServerManagementPermissions.FullControl },
                 new Permission { PermissionGroup = typeof(WindowManagementPermissions), PermissionValue = (long)WindowManagementPermissions.FullControl},
-                new Permission { PermissionGroup = typeof(CameraGroupPermissions_001_010), PermissionValue = (long)CameraGroupPermissions_001_010.Camera_001}
+                new Permission { PermissionGroup = typeof(CameraGroupPermissions_001_060), PermissionValue = (long)CameraGroupPermissions_001_060.Camera_001}
             ]
         };
 

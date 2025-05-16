@@ -5,26 +5,27 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 
 namespace Mtf.Permissions.Services
 {
-    public class PermissionManager
+    public static class PermissionManager
     {
-        private const int CameraGroupPermissionRangeSize = 10;
+        private const int CameraGroupPermissionRangeSize = 60;
 
         public static string GetCameraGroupPermissionName(long permissionCameraValue)
         {
             var start = permissionCameraValue / CameraGroupPermissionRangeSize * CameraGroupPermissionRangeSize + 1;
             var end = start + CameraGroupPermissionRangeSize - 1;
-            return String.Format("CameraGroupPermissions_{0:D3}_{1:D3}", start, end);
+            return String.Format(CultureInfo.InvariantCulture, "CameraGroupPermissions_{0:D3}_{1:D3}", start, end);
         }
 
         public static object GetCameraPermissionValue(long cameraPermissionIndex)
         {
-            var permissionType = typeof(CameraGroupPermissions_001_010);
+            var permissionType = typeof(CameraGroupPermissions_001_060);
             var assembly = permissionType.Assembly;
             var cameraGroupEnumType = assembly.GetType($"{permissionType.Namespace}.{GetCameraGroupPermissionName(cameraPermissionIndex)}");
             var cameraPermissionName = $"Camera_{cameraPermissionIndex + 1:D3}";
