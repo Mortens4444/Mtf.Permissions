@@ -2,14 +2,12 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Mtf.Permissions</id>
-    <version>4.0.3</version>
+    <version>4.0.5</version>
     <description>
       User, group permission handling, with hierarhical group structure for Windows Forms applications.
 
       Compatibility:
-      - .NET Framework 4.5.2
       - .NET Framework 4.6.2
-      - .NET Framework 4.8
       - .NET Framework 4.8.1
       - .NET 8
       - .NET 9
@@ -23,18 +21,14 @@
 	<tags>User Group Permission Mortens</tags>
 	<readme>docs\ReadMe.md</readme>
     <dependencies>
-	  <group targetFramework="net452" />
 	  <group targetFramework="net462" />
-	  <group targetFramework="net48" />
 	  <group targetFramework="net481" />
 	  <group targetFramework="net8.0-windows7" />
 	  <group targetFramework="net9.0-windows7" />
     </dependencies>
   </metadata>
   <files>
-    <file src=".\Mtf.Permissions\bin\Release\net452\**" target="lib\net452" />
     <file src=".\Mtf.Permissions\bin\Release\net462\**" target="lib\net462" />
-    <file src=".\Mtf.Permissions\bin\Release\net48\**" target="lib\net48" />
     <file src=".\Mtf.Permissions\bin\Release\net481\**" target="lib\net481" />
     <file src=".\Mtf.Permissions\bin\Release\net8.0-windows\**" target="lib\net8.0-windows7" />
     <file src=".\Mtf.Permissions\bin\Release\net9.0-windows\**" target="lib\net9.0-windows7" />
