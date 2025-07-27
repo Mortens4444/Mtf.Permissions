@@ -23,12 +23,12 @@ namespace Mtf.Permissions.Services
             return String.Format(CultureInfo.InvariantCulture, "CameraGroupPermissions_{0:D3}_{1:D3}", start, end);
         }
 
-        public static object GetCameraPermissionValue(long cameraPermissionIndex)
+        public static object GetCameraPermissionValue(long cameraPermissionNumber)
         {
             var permissionType = typeof(CameraGroupPermissions_001_060);
             var assembly = permissionType.Assembly;
-            var cameraGroupEnumType = assembly.GetType($"{permissionType.Namespace}.{GetCameraGroupPermissionName(cameraPermissionIndex)}");
-            var cameraPermissionName = $"Camera_{cameraPermissionIndex + 1:D3}";
+            var cameraGroupEnumType = assembly.GetType($"{permissionType.Namespace}.{GetCameraGroupPermissionName(cameraPermissionNumber)}");
+            var cameraPermissionName = $"Camera_{cameraPermissionNumber:D3}";
             if (cameraGroupEnumType != null)
             {
                 return Enum.Parse(cameraGroupEnumType, cameraPermissionName);
@@ -74,18 +74,18 @@ namespace Mtf.Permissions.Services
         }
 
         /// <summary>
-        /// Note that Camera_001 corresponds to index 0.
+        /// Note that Camera_001 corresponds to number 1.
         /// </summary>
-        /// <param name="cameraPermissionIndex">Zero-based index of the camera to check.</param>
+        /// <param name="cameraPermissionNumber">One-based number of the camera to check.</param>
         /// <returns>True if the CurrentUser has access to the camera.</returns>
-        public bool HasCameraPermission(long cameraPermissionIndex)
+        public bool HasCameraPermission(long cameraPermissionNumber)
         {
             if (CurrentUser == null)
             {
                 return false;
             }
 
-            return CurrentUser.HasCameraPermission(cameraPermissionIndex);
+            return CurrentUser.HasCameraPermission(cameraPermissionNumber);
         }
 
         /// <summary>

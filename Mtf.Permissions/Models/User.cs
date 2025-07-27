@@ -108,9 +108,9 @@ namespace Mtf.Permissions.Models
             return (allowedPermissions & requiredValue) == requiredValue;
         }
 
-        public bool HasCameraPermission(long cameraPermissionIndex)
+        public bool HasCameraPermission(long cameraPermissionNumber)
         {
-            var cameraPermissionValue = PermissionManager.GetCameraPermissionValue(cameraPermissionIndex);
+            var cameraPermissionValue = PermissionManager.GetCameraPermissionValue(cameraPermissionNumber);
             return HasPermission((Enum)cameraPermissionValue);
         }
 
