@@ -84,8 +84,8 @@ namespace Mtf.Permissions.Test
             try
             {
                 listView1.Items.Clear();
-                chkCamera1.Checked = permissionManager.HasCameraPermission(0);
-                chkCamera2.Checked = permissionManager.HasCameraPermission(1);
+                chkCamera1.Checked = permissionManager.HasCameraPermission(0) == AccessResult.Allowed;
+                chkCamera2.Checked = permissionManager.HasCameraPermission(1) == AccessResult.Allowed;
                 permissionManager.EnsurePermissions();
                 listView1.Items.Add(new ListViewItem(["Server 1", "192.168.0.1"]));
                 listView1.Items.Add(new ListViewItem(["Server 2", "192.168.0.2"]));
@@ -128,7 +128,7 @@ namespace Mtf.Permissions.Test
 
             if (m.Msg == WM_NCLBUTTONDOWN && m.WParam.ToInt32() == HTCAPTION)
             {
-                if (!(permissionManager.CurrentUser?.HasPermission(WindowManagementPermissions.Move) ?? false))
+                if (permissionManager.CurrentUser?.HasPermission(WindowManagementPermissions.Move) != AccessResult.Allowed)
                 {
                     return;
                 }
@@ -139,14 +139,14 @@ namespace Mtf.Permissions.Test
                 var command = m.WParam.ToInt32() & 0xFFF0;
                 if (command == SC_SIZE)
                 {
-                    if (!(permissionManager.CurrentUser?.HasPermission(WindowManagementPermissions.Resize) ?? false))
+                    if (permissionManager.CurrentUser?.HasPermission(WindowManagementPermissions.Resize) != AccessResult.Allowed)
                     {
                         return;
                     }
                 }
                 else if (command == SC_MOVE)
                 {
-                    if (!(permissionManager.CurrentUser?.HasPermission(WindowManagementPermissions.Move) ?? false))
+                    if (permissionManager.CurrentUser?.HasPermission(WindowManagementPermissions.Move) != AccessResult.Allowed)
                     {
                         return;
                     }
@@ -155,7 +155,7 @@ namespace Mtf.Permissions.Test
 
             if (m.Msg == WM_CLOSE)
             {
-                if (!(permissionManager.CurrentUser?.HasPermission(WindowManagementPermissions.Close) ?? false))
+                if (permissionManager.CurrentUser?.HasPermission(WindowManagementPermissions.Close) != AccessResult.Allowed)
                 {
                     return;
                 }

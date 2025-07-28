@@ -1,4 +1,5 @@
 ﻿using Mtf.Permissions.Attributes;
+using Mtf.Permissions.Enums;
 using Mtf.Permissions.Services;
 using System;
 using System.Collections.Generic;
@@ -35,15 +36,37 @@ namespace Mtf.Permissions.Models
 
         public T Tag { get; set; }
 
-        public bool HasPermission(Enum permission)
+        public AccessResult HasPermission(Enum permission)
         {
+            if (!Groups.Any() && !IndividualPermissions.Any())
+            {
+                return AccessResult.NoGroupsInitialized;
+            }
+
             var permissionValue = Convert.ToInt64(permission);
+            var isRevoked = RevokedPermissions.Any(p =>
+                p.PermissionGroup == permission.GetType() &&
+                (p.PermissionValue & permissionValue) == permissionValue);
 
-            var isRevoked = RevokedPermissions.Any(p => p.PermissionGroup == permission.GetType() && (p.PermissionValue & permissionValue) == permissionValue);
-            var isAllowedIndividually = IndividualPermissions.Any(p => p.PermissionGroup == permission.GetType() && (p.PermissionValue & permissionValue) == permissionValue && p.IsAllowed);
-            var isAllowedByGroup = Groups.Any(group => (group.GetAllowedPermissions(permission.GetType()) & permissionValue) == permissionValue);
+            if (isRevoked)
+            {
+                return AccessResult.Revoked;
+            }
 
-            return !isRevoked && (isAllowedIndividually || isAllowedByGroup);
+            var isAllowedIndividually = IndividualPermissions.Any(p =>
+                p.PermissionGroup == permission.GetType() &&
+                (p.PermissionValue & permissionValue) == permissionValue &&
+                p.IsAllowed);
+
+            var isAllowedByGroup = Groups.Any(group =>
+                (group.GetAllowedPermissions(permission.GetType()) & permissionValue) == permissionValue);
+
+            if (isAllowedIndividually || isAllowedByGroup)
+            {
+                return AccessResult.Allowed;
+            }
+
+            return AccessResult.NotAllowed;
         }
 
         public bool HasPermission(RequireAnyPermissionAttribute requiredPermission)
@@ -108,7 +131,7 @@ namespace Mtf.Permissions.Models
             return (allowedPermissions & requiredValue) == requiredValue;
         }
 
-        public bool HasCameraPermission(long cameraPermissionNumber)
+        public AccessResult HasCameraPermission(long cameraPermissionNumber)
         {
             var cameraPermissionValue = PermissionManager.GetCameraPermissionValue(cameraPermissionNumber);
             return HasPermission((Enum)cameraPermissionValue);

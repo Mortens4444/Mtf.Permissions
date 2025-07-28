@@ -63,11 +63,11 @@ namespace Mtf.Permissions.Services
             CurrentUser = null;
         }
 
-        public bool HasPermission(Enum permission)
+        public AccessResult HasPermission(Enum permission)
         {
             if (CurrentUser == null)
             {
-                return false;
+                return AccessResult.LoginRequired;
             }
 
             return CurrentUser.HasPermission(permission);
@@ -78,11 +78,11 @@ namespace Mtf.Permissions.Services
         /// </summary>
         /// <param name="cameraPermissionNumber">One-based number of the camera to check.</param>
         /// <returns>True if the CurrentUser has access to the camera.</returns>
-        public bool HasCameraPermission(long cameraPermissionNumber)
+        public AccessResult HasCameraPermission(long cameraPermissionNumber)
         {
             if (CurrentUser == null)
             {
-                return false;
+                return AccessResult.LoginRequired;
             }
 
             return CurrentUser.HasCameraPermission(cameraPermissionNumber);
